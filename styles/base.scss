@@ -1,0 +1,52 @@
+---
+---
+{% include sass_variables.scss %}
+
+@font-face {
+	font-family: "Coolvetica";
+	src: url("https://firstgenfirst.org/media/coolvetica-webfont.woff2") format("woff2"), url("https://firstgenfirst.org/media/coolvetica-webfont.woff") format("woff"), url("https://firstgenfirst.org/media/coolvetica-webfont.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+	font-display:swap
+}
+
+html {
+	border-top: 1.5em solid $theme-color;
+	box-sizing: border-box;
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	min-height: 100%;
+}
+
+a.link {
+	text-decoration: underline;
+	color: $theme-color;
+
+	&:hover,
+	&:focus {
+		text-decoration: none;
+	}
+}
+
+button, a.button {
+	padding: .4rem 1rem;
+	font-family: $Coolvetica;
+	font-weight: 500;
+	background-color: transparent;
+	color: $theme-color;
+	border: 0;
+	display: block;
+	font-size: 1.5rem;
+	border-radius: .4rem;
+	cursor: pointer;
+	outline: 0;
+
+	&:hover,
+	&:focus {
+		background-color: scale-color(white, $lightness: -12%);
+		color: scale-color($theme-color, $lightness: -12%);
+	}
+}

@@ -1,0 +1,21 @@
+title: First Generation First Admin
+email: figgchristian@gmail.com
+description: >-
+  Admin site used by the FGF team.
+baseurl: ""
+url: "https://admin.firstgenfirst.org"
+
+themecolor: "#0288D1"
+
+plugins:
+  - jekyll-feed
+host: 0.0.0.0
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - package.json
+  - package-lock.json
+  - gulpfile.js
+  - vendor

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>{{ page.title }} &ndash; {{ site.title }}</title>
+	<meta name="robots" content="noindex,nofollow">
+	<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,300;1,500&family=Nunito:ital,wght@1,300&display=swap" rel="stylesheet">
+	<link href="{{ site.baseurl }}/styles/base.css" rel="stylesheet" type="text/css">
+	{% for style in page.styles %}
+	<link href="{{ site.baseurl }}/styles/{{ style }}.css" rel="stylesheet" type="text/css">
+	{% endfor %}
+</head>
+<body>
+	{% for script in page.scripts %}
+	<script src="{{ site.baseurl }}/scripts/{{ script }}.js" type="text/javascript"></script>
+	{% endfor %}
+	{{ content }}
+</body>
+</html>

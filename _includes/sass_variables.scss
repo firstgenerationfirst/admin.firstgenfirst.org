@@ -1,0 +1,23 @@
+$theme-color: {{ site.themecolor }};
+$Helvetica: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+$Coolvetica: Coolvetica, Arial, sans-serif;
+$Cormorant: "Cormorant Garamond", TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+$Nunito: Nunito, $Helvetica;
+
+$content-width: 60rem;
+
+@mixin body-width {
+	width: $content-width;
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;
+}
+
+@mixin centering-flex ($direction: column) {
+	display: flex;
+	flex-direction: $direction;
+	justify-content: center;
+}
+
+$mobile: "only screen and (max-width: 767px)";
