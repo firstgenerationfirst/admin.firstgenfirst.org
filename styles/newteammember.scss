@@ -1,6 +1,17 @@
 ---
 ---
 {% include sass_variables.scss %}
+$Helvetica: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+$Coolvetica: Coolvetica, Arial, sans-serif;
+$Cormorant: "Cormorant Garamond", TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+
+@font-face {
+	font-family: "Coolvetica";
+	src: url("https://firstgenfirst.org/media/coolvetica-webfont.woff2") format("woff2"), url("https://firstgenfirst.org/media/coolvetica-webfont.woff") format("woff"), url("https://firstgenfirst.org/media/coolvetica-webfont.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+	font-display:swap
+}
 
 body {
 	margin: 2rem;
@@ -8,7 +19,7 @@ body {
 }
 
 section, .form-desc, p {
-	font-family: $Helvetica;
+	font-family: $Rubik;
 	font-weight: 300;
 	max-width: $content-width;
 	margin: 0 auto;
@@ -130,6 +141,7 @@ section, .form-desc, p {
 					font-size: 1em;
 					width: 96px;
 					font-family: inherit;
+					box-shadow: none;
 
 					&:hover,
 					&:focus {
@@ -152,12 +164,12 @@ section, .form-desc, p {
 				}
 
 				.name {
-					font-family: Coolvetica, Arial, sans-serif;
+					font-family: $Coolvetica;
 				}
 
 				span {
 					font-size: .8em;
-					font-family: "Cormorant Garamond", TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+					font-family: $Cormorant;
 				}
 			}
 
@@ -172,6 +184,7 @@ section, .form-desc, p {
 				font-family: $Helvetica;
 				font-weight: 300;
 				line-height: 1.5;
+				box-shadow: none;
 
 				&:hover,
 				&:focus {
@@ -187,6 +200,7 @@ section, .form-desc, p {
 				margin: .5em 0 0 1rem;
 
 				.link {
+					color: inherit;
 					text-decoration: underline;
 					cursor: pointer;
 
@@ -299,6 +313,7 @@ section, .form-desc, p {
 					font-size: 1em;
 					width: 96px;
 					font-family: inherit;
+					box-shadow: none;
 
 					&:hover,
 					&:focus {
@@ -321,12 +336,12 @@ section, .form-desc, p {
 				}
 
 				.name {
-					font-family: Coolvetica, Arial, sans-serif;
+					font-family: $Coolvetica;
 				}
 
 				span {
 					font-size: .8em;
-					font-family: "Cormorant Garamond", TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+					font-family: $Cormorant;
 				}
 			}
 
@@ -341,6 +356,7 @@ section, .form-desc, p {
 				font-family: $Helvetica;
 				font-weight: 300;
 				line-height: 1.5;
+				box-shadow: none;
 
 				&:hover,
 				&:focus {
@@ -356,6 +372,7 @@ section, .form-desc, p {
 				margin: .5em 0 0;
 
 				.link {
+					color: inherit;
 					text-decoration: underline;
 					cursor: pointer;
 
@@ -378,7 +395,7 @@ section, .form-desc, p {
 	width: 100%;
 	margin: .5rem auto 0;
 	padding: .2em .4em;
-	font-family: $Helvetica;
+	font-family: $Rubik;
 	font-weight: 300;
 	resize: vertical;
 	font-size: 1.2em;
@@ -397,6 +414,7 @@ section, .form-desc, p {
 
 #submit {
 	margin: 1em auto 0;
+	display: block;
 
 	.form-error & {
 		color: change-color($theme-color, $saturation: 0);
@@ -405,7 +423,7 @@ section, .form-desc, p {
 
 #name-width-test {
 	font-size: 1.5em;
-	font-family: Coolvetica, Arial, sans-serif;
+	font-family: $Coolvetica;
 	visibility: hidden;
 	position: fixed;
 	top: 100%;
@@ -418,7 +436,7 @@ section, .form-desc, p {
 #role-width-test {
 	@extend #name-width-test;
 	font-size: calc(0.8 * 1.5em);
-	font-family: "Cormorant Garamond", TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+	font-family: $Cormorant;
 }
 
 #bio-desktop-width-test,
@@ -428,5 +446,6 @@ section, .form-desc, p {
 	font-family: $Helvetica;
 	font-weight: 300;
 	white-space: pre-wrap;
+	overflow-wrap: break-word;
 	line-height: 1.5;
 }

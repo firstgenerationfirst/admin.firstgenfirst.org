@@ -2,14 +2,6 @@
 ---
 {% include sass_variables.scss %}
 
-@font-face {
-	font-family: "Coolvetica";
-	src: url("https://firstgenfirst.org/media/coolvetica-webfont.woff2") format("woff2"), url("https://firstgenfirst.org/media/coolvetica-webfont.woff") format("woff"), url("https://firstgenfirst.org/media/coolvetica-webfont.ttf") format("truetype");
-	font-weight: normal;
-	font-style: normal;
-	font-display:swap
-}
-
 html {
 	border-top: 1.5em solid $theme-color;
 	box-sizing: border-box;
@@ -21,9 +13,26 @@ body {
 	min-height: 100%;
 }
 
-a.link {
+p, h1, h2, h3, h4, h5, h6, .text {
+	font-family: $Rubik;
+	font-weight: 300;
+	color: $text-color;
+}
+
+p {
+	font-size: 1.2rem;
+	line-height: 1.5;
+}
+
+.link {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	font-size: inherit;
+	background-color: transparent;
 	text-decoration: underline;
 	color: $theme-color;
+	cursor: pointer;
 
 	&:hover,
 	&:focus {
@@ -31,9 +40,9 @@ a.link {
 	}
 }
 
-button, a.button {
+button:not(.link), a.button {
 	padding: .4rem 1rem;
-	font-family: $Coolvetica;
+	font-family: $Oswald;
 	font-weight: 500;
 	background-color: transparent;
 	color: $theme-color;
@@ -43,10 +52,35 @@ button, a.button {
 	border-radius: .4rem;
 	cursor: pointer;
 	outline: 0;
+	text-decoration: none;
+	display: inline-block;
+	transition: background-color .1s ease-in-out,
+		color .1s ease-in-out;
 
 	&:hover,
 	&:focus {
 		background-color: scale-color(white, $lightness: -12%);
 		color: scale-color($theme-color, $lightness: -12%);
+	}
+}
+
+input,
+textarea {
+	margin: 0;
+	padding: .2em .4em;
+	font-family: $Rubik;
+	font-weight: 300;
+	font-size: inherit;
+	box-sizing: border-box;
+	border: 0;
+	border-bottom: 3px solid #DDD;
+	box-shadow: 0 0.2em 0.3em rgba(0, 0, 0, 0.53);
+	outline: 0;
+	border-radius: .25rem;
+	resize: none;
+
+	&:not([readonly]):hover,
+	&:not([readonly]):focus {
+		border-bottom-color: $theme-color;
 	}
 }

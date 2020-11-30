@@ -5,7 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>{{ page.title }} &ndash; {{ site.title }}</title>
 	<meta name="robots" content="noindex,nofollow">
-	<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,300;1,500&family=Nunito:ital,wght@1,300&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com"> 
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@450;550&family=Rubik:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 	<link href="{{ site.baseurl }}/styles/base.css" rel="stylesheet" type="text/css">
 	{% for style in page.styles %}
 	<link href="{{ site.baseurl }}/styles/{{ style }}.css" rel="stylesheet" type="text/css">
@@ -31,13 +32,15 @@
 			online: false,
 			uid: null,
 			email: null,
+			firebaseUser: null,
 			logIn: new Promise(function(resolve, reject) {
 				firebase.auth().onAuthStateChanged(function(user) {
 					if (user) {
 						window.user.online = true;
 						window.user.uid = user.uid;
 						window.user.email = user.email;
-						resolve();
+						window.user.firebaseUser = user;
+						resolve(window.user);
 					} else {
 						firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
 					}
@@ -52,36 +55,16 @@
 				firebase.firestore().collection("profiles").doc(window.user.uid).get().then(function(e) {
 					let data = e.data();
 					window.user.profile = data;
-					for (const key of Object.keys(data)) {
-						let elems = document.querySelectorAll(`[data-pref="${key}"]`);
-						for (const elem of elems) {
-							elem.textContent = data[key];
-						}
-					}
-					resolve();
+					resolve(data);
 				}).catch(function(e) {
 					location.assign("/unauthorized");
 					reject();
 				});
 			}).catch(function(e) {
-				debugger;
 				location.assign("/errlogin");
 				reject(e);
 			})
-		})
-
-		!function() {
-			let auth = firebase.auth();
-			auth.useDeviceLanguage();
-
-			auth.getRedirectResult().then(function(result) {
-				if (result.credentials) {
-					console.log(result.credentials)
-				}
-			}).catch(function() {
-				location.assign("/errlogin");
-			});
-		}();
+		});
 	</script>
 	{% for script in page.scripts %}
 	<script src="{{ site.baseurl }}/scripts/{{ script }}.js" type="text/javascript"></script>

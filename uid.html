@@ -1,0 +1,11 @@
+---
+layout: default
+styles:
+  - uid
+---
+<script>
+	user.logIn.then(function() {
+		document.getElementById("uid").innerHTML = "Your UID is<br><code>" + user.uid + "</code>";
+	});
+</script>
+<span id="uid">Logging you in...</span>

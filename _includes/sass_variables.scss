@@ -1,10 +1,11 @@
 $theme-color: {{ site.themecolor }};
+$text-color: #37474F;
 $Helvetica: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
-$Coolvetica: Coolvetica, Arial, sans-serif;
-$Cormorant: "Cormorant Garamond", TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
-$Nunito: Nunito, $Helvetica;
+$Oswald: Oswald, sans-serif;
+$Rubik: Rubik, sans-serif;
 
-$content-width: 60rem;
+$content-width: 70rem;
+$shadow: 0 .2rem .25rem 0rem rgba(0,0,0,.4);
 
 @mixin body-width {
 	width: $content-width;
