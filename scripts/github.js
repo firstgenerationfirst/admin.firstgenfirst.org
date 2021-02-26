@@ -26,7 +26,7 @@ window.github = (function() {
 				document.documentElement.setAttribute("data-gh-loading", "");
 
 				let xhr = new XMLHttpRequest();
-				xhr.open("POST", "https://us-west2-firstgenfirst-admin-website.cloudfunctions.net/gh-access-token");
+				xhr.open("POST", "https://us-west2-first-gen-first-admin-site.cloudfunctions.net/gh-access-token");
 				xhr.setRequestHeader("Content-Type", "application/json");
 
 				xhr.addEventListener("readystatechange", function() {
@@ -80,7 +80,7 @@ window.github = (function() {
 								document.cookie = "gh-sid=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
 							}
 							document.documentElement.removeAttribute("data-gh-loading");
-							document.setAttribute("data-github-error", "");
+							document.documentElement.setAttribute("data-github-error", "");
 							reject({response: this.response, status: this.status});
 						}
 					}

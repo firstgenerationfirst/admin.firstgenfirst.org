@@ -16,7 +16,7 @@ styles:
 	</div>
 </div>
 <div id="gh-signin">
-	<a id="gh-signin-btn" href="https://github.com/login/oauth/authorize?client_id=9a609052bde093615735&scope=user%20public_repo&allow_signup=false&redirect_uri={% if jekyll.environment == "development" %}http%3A%2F%2Flocalhost%3A4000{% else %}https%3A%2F%2Fadmin.firstgenfirst.org{% endif %}{{ page.url | url_encode }}" class="button" id="gh-signin-svg">
+	<a id="gh-signin-btn" href="https://github.com/login/oauth/authorize?client_id=9a609052bde093615735&scope=user%20public_repo&allow_signup=false&redirect_uri=https%3A%2F%2Fadmin.firstgenfirst.org{{ page.url | url_encode }}" class="button" id="gh-signin-svg">
 		<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 .5c-6.63 0-12 5.28-12 11.792 0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56 4.801-1.548 8.236-5.97 8.236-11.173 0-6.512-5.373-11.792-12-11.792z"/></svg>
 	</a>
 	<a id="gh-signout-btn" href="https://github.com/login/oauth/authorize?client_id=9a609052bde093615735&scope=user%20public_repo&allow_signup=false&redirect_uri={% if jekyll.environment == "development" %}http%3A%2F%2Flocalhost%3A4000{% else %}https%3A%2F%2Fadmin.firstgenfirst.org{% endif %}{{ page.url | url_encode }}" class="button" id="gh-signin-svg">
@@ -95,9 +95,9 @@ styles:
 	<button id="submit">Submit</button>
 </div>
 <script type="text/javascript">
+	let invalidID = true;
+	let invalidDesc = true;
 	!function() {
-		let invalidID = true;
-		let invalidDesc = true;
 
 		let id = "";
 		let desc = "";
@@ -105,10 +105,14 @@ styles:
 		let fileContents;
 		let fileSHA;
 
-		document.documentElement.setAttribute("data-yt-loading", "");
-		github.logIn.then(checkYouTube).catch();
+		github.logIn.then(checkYouTube).catch(function(e) {
+			if (e.status != 400) {
+				document.documentElement.setAttribute("data-github-error", "");
+			}
+		});
 
 		function checkYouTube() {
+			document.documentElement.setAttribute("data-yt-loading", "");
 			Promise.all([
 				new Promise(function(resolve, reject) {
 					let xhr = new XMLHttpRequest();
@@ -147,7 +151,7 @@ styles:
 				document.documentElement.removeAttribute("data-yt-loading");
 				document.documentElement.setAttribute("data-yt-loaded", "");
 
-				document.getElementById("current-thumbnail").src = `http://img.youtube.com/vi/${results[1].id}/maxresdefault.jpg`
+				document.getElementById("current-thumbnail").src = `http://i3.ytimg.com/vi/${results[1].id}/0.jpg`
 				document.getElementById("current-id").value = `https://youtu.be/${results[1].id}`;
 				document.getElementById("current-desc").value = results[1].description;
 				document.getElementById("current-ext-link").href = `https://youtu.be/${results[1].id}`;
@@ -161,7 +165,7 @@ styles:
 
 				if (results[0].id != results[1].id) {
 					document.documentElement.setAttribute("data-yt-update", "");
-					document.getElementById("new-thumbnail").src = `http://img.youtube.com/vi/${results[0].id}/maxresdefault.jpg`;
+					document.getElementById("new-thumbnail").src = `http://i3.ytimg.com/vi/${results[0].id}/0.jpg`;
 					document.getElementById("new-id").value = `https://youtu.be/${results[0].id}`;
 					document.getElementById("new-ext-link").href = `https://youtu.be/${results[0].id}`;
 					id = results[0].id;
@@ -171,72 +175,72 @@ styles:
 				document.documentElement.removeAttribute("data-yt-loading");
 				document.documentElement.setAttribute("data-yt-error", "");
 			});
+		}
 
-			document.getElementById("new-id").addEventListener("keyup", function() {
-				let match;
-				if (match = this.value.match(/(?:https?:\/\/)?(?:www\.|m\.)?youtube\.com\/watch\?(?:.*?=.*?&)*?v=([^&]+?)(?:&.*?=.*?)*?$/i)) {
-					id = match[1];
-				} else if (match = this.value.match(/(?:https?:\/\/)?(?:www\.|m\.)?youtu\.be\/([^?]+?)(?:\?(?:.*?=.*?)?(?:&.*?=.*?)*?)?$/i)) {
-					id = match[1];
-				} else {
-					id = this.value;
-				}
-				id = id.trim();
-				thumbnail = document.getElementById("new-thumbnail");
-				thumbnail.src = `http://img.youtube.com/vi/${id}/maxresdefault.jpg`;
-				thumbnail.style.opacity = id ? "" : "0";
-				document.getElementById("new-ext-link").href = `https://youtu.be/${id}`;
-			});
-
-			const newCharCount = document.getElementById("new-char-count");
-			document.getElementById("new-desc").addEventListener("keyup", function() {
-				desc = this.value;
-				const length = desc.length;
-				newCharCount.textContent = `${length} character${length == 1 ? "" : "s"} used`;
-				invalidDesc = length < 150 || length > 200
-				newCharCount.style.color = invalidDesc ? "#F44336" : "";
-			});
-
-			document.getElementById("new-thumbnail").addEventListener("load", function() {
-				invalidID = this.naturalWidth != 1280;
-			});
-
-			document.getElementById("submit").addEventListener("click", function() {
-				if (invalidID) {
-					document.documentElement.setAttribute("data-bad-id", "");
-					document.getElementById("modal-change").focus();
-				} else if (invalidDesc) {
-					document.documentElement.setAttribute("data-bad-desc", "");
-					document.getElementById("modal-change").focus();
-				} else {
-					submit();
-				}
-			});
-
-			document.getElementById("modal-change").addEventListener("click", function() {
-				document.documentElement.removeAttribute("data-bad-id");
-				document.documentElement.removeAttribute("data-bad-desc");
-			});
-
-			document.getElementById("modal-cont").addEventListener("click", submit);
-
-			function escapeHTML(string) {
-				return string.replace(/&/g, "&amp;")
-					.replace(/</g, "&lt;")
-					.replace(/>/g, "&gt;")
-					.replace(/"/g, "&quot;")
-					.replace(/'/g, "&#039;");
+		document.getElementById("new-id").addEventListener("keyup", function() {
+			let match;
+			if (match = this.value.match(/(?:https?:\/\/)?(?:www\.|m\.)?youtube\.com\/watch\?(?:.*?=.*?&)*?v=([^&]+?)(?:&.*?=.*?)*?$/i)) {
+				id = match[1];
+			} else if (match = this.value.match(/(?:https?:\/\/)?(?:www\.|m\.)?youtu\.be\/([^?]+?)(?:\?(?:.*?=.*?)?(?:&.*?=.*?)*?)?$/i)) {
+				id = match[1];
+			} else {
+				id = this.value;
 			}
+			id = id.trim();
+			thumbnail = document.getElementById("new-thumbnail");
+			thumbnail.src = `http://i3.ytimg.com/vi/${id}/0.jpg`;
+			thumbnail.style.opacity = id ? "" : "0";
+			document.getElementById("new-ext-link").href = `https://youtu.be/${id}`;
+		});
 
-			function submit() {
-				document.documentElement.setAttribute("data-submitting", "");
-				github.file.write("home.html", fileContents[1] + escapeHTML(id) + fileContents[3] + escapeHTML(desc) + fileContents[5], "Update YouTube video on homepage", fileSHA).then(function() {
-					location.reload();
-				}).catch(function(a) {
-					document.documentElement.removeAttribute("data-submitting");
-					document.documentElement.setAttribute("data-submission-error", "");
-				});
+		const newCharCount = document.getElementById("new-char-count");
+		document.getElementById("new-desc").addEventListener("keyup", function() {
+			desc = this.value;
+			const length = desc.length;
+			newCharCount.textContent = `${length} character${length == 1 ? "" : "s"} used`;
+			invalidDesc = length < 150 || length > 200
+			newCharCount.style.color = invalidDesc ? "#F44336" : "";
+		});
+
+		document.getElementById("new-thumbnail").addEventListener("load", function() {
+			invalidID = this.naturalWidth != 480;
+		});
+
+		document.getElementById("submit").addEventListener("click", function() {
+			if (invalidID) {
+				document.documentElement.setAttribute("data-bad-id", "");
+				document.getElementById("modal-change").focus();
+			} else if (invalidDesc) {
+				document.documentElement.setAttribute("data-bad-desc", "");
+				document.getElementById("modal-change").focus();
+			} else {
+				submit();
 			}
+		});
+
+		document.getElementById("modal-change").addEventListener("click", function() {
+			document.documentElement.removeAttribute("data-bad-id");
+			document.documentElement.removeAttribute("data-bad-desc");
+		});
+
+		document.getElementById("modal-cont").addEventListener("click", submit);
+
+		function escapeHTML(string) {
+			return string.replace(/&/g, "&amp;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;")
+				.replace(/"/g, "&quot;")
+				.replace(/'/g, "&#039;");
+		}
+
+		function submit() {
+			document.documentElement.setAttribute("data-submitting", "");
+			github.file.write("home.html", fileContents[1] + escapeHTML(id) + fileContents[3] + escapeHTML(desc) + fileContents[5], "Update YouTube video on homepage", fileSHA).then(function() {
+				location.reload();
+			}).catch(function(a) {
+				document.documentElement.removeAttribute("data-submitting");
+				document.documentElement.setAttribute("data-submission-error", "");
+			});
 		}
 	}();
 </script>

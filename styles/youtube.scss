@@ -83,13 +83,15 @@ body {
 	display: none;
 	text-align: center;
 
-	#gh-signin-svg {
+	#gh-signin-btn {
+		display: inline-block;
 		padding: 1rem;
 		border-radius: 50%;
 
 		svg {
 			fill: $theme-color;
 			height: 5rem;
+			width: 5rem;
 			display: block;
 		}
 	}

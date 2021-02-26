@@ -1,0 +1,63 @@
+---
+layout: unauthenticated
+title: Sign In
+styles:
+  - signin
+---
+<script async defer src="https://apis.google.com/js/api.js" id="gapi-script"></script>
+<div>
+	<p>The page you are trying to access requires that you sign in to your Google account.</p>
+	<button id="signin">Sign In</button>
+</div>
+<script type="text/javascript">
+	!function() {
+		let params = {};
+		if (location.search) {
+			let kv = location.search.substring(1).split("&");
+			for (let i = kv.length - 1; i >= 0; i--) {
+				kv[i] = kv[i].split("=");
+				params[kv[i][0]] = kv[i][1];
+			}
+		}
+
+		let gapiLoaded = new Promise(function(resolve, reject) {
+			const script = document.getElementById("gapi-script");
+
+			function gapiLoaded2() {
+				gapi.load("client:auth2", function() {
+					gapi.client.init({
+						apiKey: "AIzaSyBLZkeVHg1qYygChbI9dEltdCm3UKF93X8",
+						clientId: "544519717939-mljfuqt4cd6it8on67gmptrnv964171e.apps.googleusercontent.com",
+						discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+						scope: "https://www.googleapis.com/auth/spreadsheets"
+					}).then(resolve).catch(reject);
+				});
+			}
+
+			if (window.gapi) {
+				gapiLoaded2();
+			} else {
+				script.addEventListener("load", gapiLoaded2);
+				script.addEventListener("error", reject);
+			}
+		}).then(function() {
+			const auth2 = gapi.auth2.getAuthInstance();
+
+			document.getElementById("signin").addEventListener("click", function() {
+				auth2.signIn(); 
+			});
+
+			if (auth2.isSignedIn.get()) {
+				location.replace(params.back || "/");
+			}
+
+			auth2.isSignedIn.listen(function(signedIn) {
+				if (signedIn) {
+					location.replace(params.back || "/");
+				}
+			});
+		}).catch(function(e) {
+			throw e;
+		});
+	}();
+</script>

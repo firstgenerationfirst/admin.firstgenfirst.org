@@ -3,7 +3,7 @@
 {% include sass_variables.scss %}
 
 html {
-	border-top: 1.5em solid $theme-color;
+	border-top: 1.5rem solid $theme-color;
 	box-sizing: border-box;
 	height: 100%;
 }
@@ -42,6 +42,7 @@ p {
 
 button:not(.link), a.button {
 	padding: .4rem 1rem;
+	margin: 0;
 	font-family: $Oswald;
 	font-weight: 500;
 	background-color: transparent;
@@ -64,8 +65,12 @@ button:not(.link), a.button {
 	}
 }
 
-input,
-textarea {
+input[type=text],
+input[type=search],
+input[type=number],
+input:not([type]),
+textarea,
+select {
 	margin: 0;
 	padding: .2em .4em;
 	font-family: $Rubik;
@@ -78,9 +83,28 @@ textarea {
 	outline: 0;
 	border-radius: .25rem;
 	resize: none;
+	-webkit-appearance: none;
+	transition: border-bottom-color .1s ease-in-out;
 
 	&:not([readonly]):hover,
 	&:not([readonly]):focus {
 		border-bottom-color: $theme-color;
 	}
+
+	&:not([readonly]):invalid:focus {
+		border-bottom-color: change-color($theme-color, $hue: 60deg);
+	}
+
+	&:invalid:invalid {
+		border-bottom-color: change-color($theme-color, $hue: 0deg);
+	}
+}
+
+select {
+	cursor: pointer;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,75 75,25 25,25'/%3E%3C/svg%3E%0A");
+	background-repeat: no-repeat;
+	background-position: calc(100% - .4rem);
+	background-size: 1em;
+	padding-right: calc(1em + .4rem);
 }
