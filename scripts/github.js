@@ -54,12 +54,12 @@ window.github = (function() {
 									if (permissions.permission == "admin" || permissions.permission == "write") {
 										resolve();
 									} else {
-										document.setAttribute("data-github-no-write", "");
+										document.documentElement.setAttribute("data-github-no-write", "");
 										reject({response: "No write access.", status: 401});
 									}
 								}).catch(function(e) {
 									document.documentElement.removeAttribute("data-gh-loading");
-									document.setAttribute("data-github-error", "");
+									document.documentElement.setAttribute("data-github-error", "");
 									if (e.constructor == Object) {
 										reject(e);
 									} else {
@@ -68,7 +68,7 @@ window.github = (function() {
 								});
 							}).catch(function(e) {
 								document.documentElement.removeAttribute("data-gh-loading");
-								document.setAttribute("data-github-error", "");
+								document.documentElement.setAttribute("data-github-error", "");
 								if (e.contructor == Object) {
 									reject(e);
 								} else {
