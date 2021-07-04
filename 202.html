@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Form Submitted &ndash; First Generation First Admin</title>
+	<meta name="robots" content="noindex,nofollow">
+	<link rel="preconnect" href="https://fonts.gstatic.com"> 
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@450;550&family=Rubik:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+	<link href="/styles/base.css" rel="stylesheet" type="text/css">
+	
+	<link href="/styles/statuspage.css" rel="stylesheet" type="text/css">
+	
+</head>
+<body>
+	
+	<div id="flex">
+	<div id="goback">
+		<a id="go-back-link" href="#"><svg viewBox="0 0 1.2 2"><polyline points="1.1,.3 .1,1 1.1,1.7"/></svg> <span>Back</span></a>
+	</div>
+	<div id="icon">
+		<svg id="s202" viewBox="0 0 100 100">
+			<polyline id="path-animate-check" points="0,0"/>
+			<path id="path-animate-circle" d="M0,0"/>
+		</svg>
+	</div>
+	<div id="text">
+		<h1>202</h1>
+		<h2>Your form is being submitted</h2>
+	</div>
+</div>
+<script type="text/javascript">
+	!function() {
+		let params = {};
+		if (location.search) {
+			const pairs = location.search.substring(1).split("&");
+			for (const param of pairs) {
+				const kv = param.split("=");
+				params[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
+			}
+		}
+
+		if (params.back) {
+			goBackLink = document.getElementById("go-back-link")
+			goBackLink.href = params.back;
+			goBackLink.lastElementChild.textContent = params.back.replace(/^(?:https?:\/\/)?(?:www\.|admin\.firstgenfirst\.org)?/, "");
+		} else {
+			document.getElementById("go-back-link").addEventListener("click", function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				history.go(-1);
+			});
+		}
+	}();
+</script>
+<script type="text/javascript">
+	!function() {
+		"use strict";
+
+		const circle = document.getElementById("path-animate-circle");
+		const check = document.getElementById("path-animate-check");
+		const duration_circle = 1000; // duration of circle's animation in ms
+		const duration_check = 300; // duration of the checkmark's animation in ms
+		const angle = 3 * Math.PI / 2; // angle from where to start (0 = positive x direction)
+		const displacement = Math.PI; // difference of ending angle from starting angle
+		const delay = 500; // delay to start the animation in ms
+
+		setTimeout(function() {
+			let start;
+			let check_done = false;
+			const check_points = [18.3,53.5,38.8,74,77,35.8];
+			const check_length1 = Math.hypot(check_points[2] - check_points[0], check_points[3] - check_points[1]);
+			const check_length2 = Math.hypot(check_points[4] - check_points[2], check_points[5] - check_points[3]);
+			const check_bend = check_length1 / (check_length1 + check_length2);
+			function animate(now) {
+				if (start == undefined) {
+					start = now;
+				}
+
+				if (!check_done) {
+					let progress_check = (now - start) / duration_check;
+
+					if (progress_check >= 1) {
+						check.setAttribute("points", `${check_points[0]},${check_points[1]} ${check_points[2]},${check_points[3]} ${check_points[4]},${check_points[5]}`);
+						start = now;
+						check_done = true;
+					} else {
+						if (progress_check < check_bend) {
+							progress_check /= check_bend;
+							check.setAttribute("points", `${check_points[0]},${check_points[1]} ${check_points[0] + (check_points[2] - check_points[0]) * progress_check},${check_points[1] + (check_points[3] - check_points[1]) * progress_check}`);
+						} else {
+							progress_check = (progress_check - check_bend) / (1 - check_bend);
+							check.setAttribute("points", `${check_points[0]},${check_points[1]} ${check_points[2]},${check_points[3]} ${check_points[2] + (check_points[4] - check_points[2]) * progress_check},${check_points[3] + (check_points[5] - check_points[3]) * progress_check}`);
+						}
+						requestAnimationFrame(animate);
+					}
+				}
+
+				if (check_done) {
+					let progress_circle = (now - start) / duration_circle;
+					// Makes circle's animation easeInOutCubic
+					progress_circle = progress_circle < 0.5 ?
+						4 * progress_circle * progress_circle * progress_circle :
+						(progress_circle - 1) * (2 * progress_circle - 2) * (2 * progress_circle - 2) + 1;
+
+					if (progress_circle >= 0) {
+						if (progress_circle >= 1) {
+							// End the enimation by completing the circle
+							circle.setAttribute("d", `M95,50A45,45,0,0,0,5,50,45,45,0,0,0,95,50`);
+						} else {
+							circle.setAttribute("d", `M${45 * Math.cos(progress_circle * displacement + angle) + 50},${-45 * Math.sin(progress_circle * displacement + angle) + 50}A45,45,0,${Math.round(progress_circle)},0,${45 * Math.cos(progress_circle * (2 * Math.PI + displacement) + angle) + 50},${-45 * Math.sin(progress_circle * (2 * Math.PI + displacement) + angle) + 50}`);
+							requestAnimationFrame(animate);
+						}
+					}
+				}
+			}
+			requestAnimationFrame(animate);
+		}, delay);
+	}();
+</script>
+
+</body>
+</html>

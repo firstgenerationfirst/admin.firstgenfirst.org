@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title> &ndash; First Generation First Admin</title>
+	<meta name="robots" content="noindex,nofollow">
+	<link rel="preconnect" href="https://fonts.gstatic.com"> 
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@450;550&family=Rubik:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+	<link href="/styles/base.css" rel="stylesheet" type="text/css">
+	
+	<link href="/styles/unauthorized.css" rel="stylesheet" type="text/css">
+	
+</head>
+<body>
+	
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+<p>There was a problem logging you into your Google account. Contact <a class="text link" href="mailto:christian@firstgenfirst.org">christian@firstgenfirst.org</a>, or try <button class="text link" id="switch-account">logging in with a different account</button>.</p>
+<script type="text/javascript">
+	firebase.initializeApp({
+		apiKey: "AIzaSyBLZkeVHg1qYygChbI9dEltdCm3UKF93X8",
+		authDomain: "first-gen-first-admin-site.firebaseapp.com",
+		databaseURL: "https://first-gen-first-admin-site.firebaseio.com",
+		projectId: "first-gen-first-admin-site",
+		storageBucket: "first-gen-first-admin-site.appspot.com",
+		messagingSenderId: "544519717939",
+		appId: "1:544519717939:web:154ab2d776fda1271f8f46"
+	});
+	document.getElementById("switch-account").addEventListener("click", function() {
+		firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+	});
+	firebase.auth().getRedirectResult().then(function(user) {
+		if (user && user.user) {
+			location.replace("/");
+		}
+	});
+</script>
+</body>
+</html>

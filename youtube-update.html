@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Update Homepage YouTube Video &ndash; First Generation First Admin</title>
+	<meta name="robots" content="noindex,nofollow">
+	<link rel="preconnect" href="https://fonts.gstatic.com"> 
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@450;550&family=Rubik:ital,wght@0,300;0,450;1,300&display=swap" rel="stylesheet">
+	<link href="/styles/base.css" rel="stylesheet" type="text/css">
+	
+	<link href="/styles/youtube.css" rel="stylesheet" type="text/css">
+	
+</head>
+<body>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
+	<script async defer src="https://apis.google.com/js/api.js" id="gapi-script"></script>
+	<script>
+		"use strict";
+		firebase.initializeApp({
+			apiKey: "AIzaSyBLZkeVHg1qYygChbI9dEltdCm3UKF93X8",
+			authDomain: "first-gen-first-admin-site.firebaseapp.com",
+			databaseURL: "https://first-gen-first-admin-site.firebaseio.com",
+			projectId: "first-gen-first-admin-site",
+			storageBucket: "first-gen-first-admin-site.appspot.com",
+			messagingSenderId: "544519717939",
+			appId: "1:544519717939:web:154ab2d776fda1271f8f46"
+		});
+
+		let gapiLoaded = new Promise(function(resolve, reject) {
+			const script = document.getElementById("gapi-script");
+
+			function gapiLoaded2() {
+				gapi.load("client:auth2", function() {
+					gapi.client.init({
+						apiKey: "AIzaSyBLZkeVHg1qYygChbI9dEltdCm3UKF93X8",
+						clientId: "544519717939-mljfuqt4cd6it8on67gmptrnv964171e.apps.googleusercontent.com",
+						discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+						scope: "https://www.googleapis.com/auth/spreadsheets.readonly"
+					}).then(resolve).catch(reject);
+				});
+			}
+
+			if (window.gapi) {
+				gapiLoaded2();
+			} else {
+				script.addEventListener("load", gapiLoaded2);
+				script.addEventListener("error", reject);
+			}
+		});
+
+		window.user = {
+			online: false,
+			uid: null,
+			email: null,
+			firebaseUser: null,
+			logIn: new Promise(function(resolve, reject) {
+				gapiLoaded.then(function() {
+					const auth2 = gapi.auth2.getAuthInstance();
+					auth2.isSignedIn.listen(function(signedIn) {
+						if (!signedIn) {
+							location.replace("/signin?back=/youtube-update.html");
+						}
+					});
+
+					if (!auth2.isSignedIn.get()) {
+						location.replace("/signin?back=/youtube-update.html");
+					}
+
+					const response = auth2.currentUser.get().getAuthResponse();
+					firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(
+						response.id_token,
+						response.access_token
+					)).then(function(result) { 
+						window.user.online = true;
+						window.user.uid = result.user.uid;
+						window.user.email = result.user.email;
+						window.user.firebaseUser = result.user;
+						resolve(window.user);
+					});
+				});
+			}),
+			profile: null,
+			readProfile: null
+		};
+
+		window.user.readProfile = new Promise(function(resolve, reject) {
+			window.user.logIn.then(function() {
+				firebase.firestore().collection("profiles").doc(window.user.uid).get().then(function(e) {
+					let data = e.data();
+					window.user.profile = data;
+					resolve(data);
+				}).catch(function(e) {
+					location.assign("/unauthorized");
+					reject();
+				});
+			}).catch(function(e) {
+				location.assign("/errlogin");
+				reject(e);
+			})
+		});
+	</script>
+	
+	<script src="/scripts/github.js" type="text/javascript"></script>
+	
+	<div id="modal-container">
+	<div id="modal">
+		<p><span id="bad-desc-span">The description you entered is not between 150 and 200 characters.</span><span id="bad-id-span">The video link you entered does not seem to be a real YouTube video.</span> <strong>Are you sure you want to continue?</strong></p>
+		<div id="modal-flex">
+			<button id="modal-change">Go Back</button>
+			<button id="modal-cont">Continue</button>
+		</div>
+	</div>
+</div>
+<div id="gh-signin">
+	<a id="gh-signin-btn" href="https://github.com/login/oauth/authorize?client_id=9a609052bde093615735&scope=user%20public_repo&allow_signup=false&redirect_uri=https%3A%2F%2Fadmin.firstgenfirst.org%2Fyoutube-update.html" class="button" id="gh-signin-svg">
+		<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 .5c-6.63 0-12 5.28-12 11.792 0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56 4.801-1.548 8.236-5.97 8.236-11.173 0-6.512-5.373-11.792-12-11.792z"/></svg>
+	</a>
+	<a id="gh-signout-btn" href="https://github.com/login/oauth/authorize?client_id=9a609052bde093615735&scope=user%20public_repo&allow_signup=false&redirect_uri=https%3A%2F%2Fadmin.firstgenfirst.org%2Fyoutube-update.html" class="button" id="gh-signin-svg">
+		<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m12 .5c-6.63 0-12 5.28-12 11.792 0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56 4.801-1.548 8.236-5.97 8.236-11.173 0-6.512-5.373-11.792-12-11.792z"/></svg>
+	</a>
+	<div class="gh-text" id="gh-text-signin">
+		<div class="text">Please sign into your GitHub account to continue.</div>
+		<a href="https://github.com/login/oauth/authorize?client_id=9a609052bde093615735&scope=user%20public_repo&allow_signup=false&redirect_uri=https%3A%2F%2Fadmin.firstgenfirst.org%2Fyoutube-update.html" class="button">Sign In</a>
+	</div>
+	<div class="gh-text" id="gh-text-no-write">
+		<div class="text">The account you used to sign into GitHub does not have write access to the firstgenfirst.org repository. Please log out and sign in with a different account.</div>
+		<a href="https://github.com/logout" target="_blank" rel="nofollow noopener" class="button">Sign Out of GitHub</a>
+	</div>
+	<div class="gh-text" id="gh-text-re-signin">
+		<div class="text">There was a problem signing into your account. Please try again.</div>
+		<a href="https://github.com/login/oauth/authorize?client_id=9a609052bde093615735&scope=user%20public_repo&allow_signup=false&redirect_uri=https%3A%2F%2Fadmin.firstgenfirst.org%2Fyoutube-update.html" class="button">Try Again</a>
+	</div>
+</div>
+<div id="yt-loading">
+	<svg id="yt-loading-yt" viewBox="0 0 512 358" xmlns="http://www.w3.org/2000/svg"><path d="m501.453125 56.09375c-5.902344-21.933594-23.195313-39.222656-45.125-45.128906-40.066406-10.964844-200.332031-10.964844-200.332031-10.964844s-160.261719 0-200.328125 10.546875c-21.507813 5.902344-39.222657 23.617187-45.125 45.546875-10.542969 40.0625-10.542969 123.148438-10.542969 123.148438s0 83.503906 10.542969 123.148437c5.90625 21.929687 23.195312 39.222656 45.128906 45.128906 40.484375 10.964844 200.328125 10.964844 200.328125 10.964844s160.261719 0 200.328125-10.546875c21.933594-5.902344 39.222656-23.195312 45.128906-45.125 10.542969-40.066406 10.542969-123.148438 10.542969-123.148438s.421875-83.507812-10.546875-123.570312zm0 0" fill="red"/><path d="m204.96875 256 133.269531-76.757812-133.269531-76.757813zm0 0" fill="#fff"/></svg>
+	<div id="yt-loading-dots">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+</div>
+<div id="yt-error">
+	<svg id="yt-error-yt" viewBox="0 0 512 358" xmlns="http://www.w3.org/2000/svg"><path d="m501.453125 56.09375c-5.902344-21.933594-23.195313-39.222656-45.125-45.128906-40.066406-10.964844-200.332031-10.964844-200.332031-10.964844s-160.261719 0-200.328125 10.546875c-21.507813 5.902344-39.222657 23.617187-45.125 45.546875-10.542969 40.0625-10.542969 123.148438-10.542969 123.148438s0 83.503906 10.542969 123.148437c5.90625 21.929687 23.195312 39.222656 45.128906 45.128906 40.484375 10.964844 200.328125 10.964844 200.328125 10.964844s160.261719 0 200.328125-10.546875c21.933594-5.902344 39.222656-23.195312 45.128906-45.125 10.542969-40.066406 10.542969-123.148438 10.542969-123.148438s.421875-83.507812-10.546875-123.570312zm0 0" fill="red"/><path d="m204.96875 256 133.269531-76.757812-133.269531-76.757813zm0 0" fill="#fff"/></svg>
+	<p>There was a problem connecting to YouTube. Please reload the page and try again.</p>
+</div>
+<div id="content">
+	<div id="yt-update">
+		<svg id="yt-update-warn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.362,383.95L320.497,51.474c-29.059-48.921-99.896-48.986-128.994,0L10.647,383.95c-29.706,49.989,6.259,113.291,64.482,113.291h361.736C495.039,497.241,531.068,433.99,501.362,383.95z M256,437.241c-16.538,0-30-13.462-30-30c0-16.538,13.462-30,30-30c16.538,0,30,13.462,30,30C286,423.779,272.538,437.241,256,437.241zM286,317.241c0,16.538-13.462,30-30,30c-16.538,0-30-13.462-30-30v-150c0-16.538,13.462-30,30-30c16.538,0,30,13.462,30,30V317.241z"/></svg>
+		<p>The video on the website homepage needs to be updated.</p>
+		<p>Some information has been filled out for you.</p>
+	</div>
+	<div id="content-flex">
+		<div id="current">
+			<h1>Current Video</h1>
+			<div class="url-input">
+				<a class="ext-link" id="current-ext-link" target="_blank" rel="nofollow noopener">
+					<svg class="ext-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="96,4 61,4 75,18 47,46 54,53 82,25 96,39 "/><path d="M47,5H17.5C10.6,5,5,10.6,5,17.5v65C5,89.4,10.6,95,17.5,95h65C89.4,95,95,89.4,95,82.5V53"/></svg>
+				</a>
+				<input readonly class="id" type="text" id="current-id">
+			</div>
+			<div class="thumbnail-container">
+				<img class="thumbnail" id="current-thumbnail">
+				<div></div>
+			</div>
+			<textarea readonly id="current-desc"></textarea>
+			<p id="current-char-count" class="char-count">0 characters used</p>
+		</div>
+		<div id="content-divider">
+			<div></div>
+		</div>
+		<div id="new">
+			<h1>New Video</h1>
+			<div class="url-input">
+				<a href="https://youtu.be" class="ext-link" id="new-ext-link" target="_blank" rel="nofollow noopener">
+					<svg class="ext-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="96,4 61,4 75,18 47,46 54,53 82,25 96,39 "/><path d="M47,5H17.5C10.6,5,5,10.6,5,17.5v65C5,89.4,10.6,95,17.5,95h65C89.4,95,95,89.4,95,82.5V53"/></svg>
+				</a>
+				<input class="id" type="text" id="new-id" placeholder="Paste a YouTube URL here">
+			</div>
+			<div class="thumbnail-container">
+				<div id="no-thumbnail">
+					<p>Paste a URL to see the thumbnail.</p>
+				</div>
+				<img class="thumbnail" id="new-thumbnail">
+				<div></div>
+			</div>
+			<textarea id="new-desc" placeholder="Try to aim for 150–200 characters"></textarea>
+			<p id="new-char-count" class="char-count" style="color: red;">0 characters used</p>
+		</div>
+	</div>
+	<p id="submission-error">There was a problem submitting. Try again.</p>
+	<button id="submit">Submit</button>
+</div>
+<script type="text/javascript">
+	let invalidID = true;
+	let invalidDesc = true;
+	!function() {
+
+		let id = "";
+		let desc = "";
+
+		let fileContents;
+		let fileSHA;
+
+		github.logIn.then(checkYouTube).catch(function(e) {
+			if (e.status != 400) {
+				document.documentElement.setAttribute("data-github-error", "");
+			}
+		});
+
+		function checkYouTube() {
+			document.documentElement.setAttribute("data-yt-loading", "");
+			Promise.all([
+				new Promise(function(resolve, reject) {
+					let xhr = new XMLHttpRequest();
+					xhr.open("GET", "https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId=UCmFyUfF2O_-k9U1UIYwM6RA&maxResults=1&key=AIzaSyDHkKgKpuxJwox6_qwkDoNAGESA--cMyqs");
+					xhr.addEventListener("readystatechange", function(e) {
+						if (this.readyState == 4) {
+							if (this.status == 200) {
+								let video = JSON.parse(this.response).items[0];
+								resolve({
+									id: video.id.videoId,
+									title: video.snippet.title.replace(/&#39;/g, "'"),
+									description: video.snippet.description,
+									thumbnails: video.snippet.thumbnails
+								});
+							} else {
+								reject(this.response);
+							}
+						}
+					});
+					xhr.send();
+				}),
+				github.file.read("home.html").then(function(file) {
+					fileSHA = file.sha;
+					file = decodeURIComponent(escape(atob(file.content)));
+					let match = file.match(/(^---\r\n[\s\S]*?youtube: )(.+)([\s\S]*?\r\n---\r\n[\s\S]*?<!-- BEGIN YouTube Video Description -->)([\s\S]*?)(<!-- END YouTube Video Description -->[\s\S]*?$)/);
+					if (!match || !match[2] || !match[4]) {
+						throw new Error("YouTube metadata could not be found.");
+					}
+					fileContents = match;
+					return {
+						id: match[2],
+						description: match[4]
+					};
+				})
+			]).then(function(results) {
+				document.documentElement.removeAttribute("data-yt-loading");
+				document.documentElement.setAttribute("data-yt-loaded", "");
+
+				document.getElementById("current-thumbnail").src = `http://i3.ytimg.com/vi/${results[1].id}/0.jpg`
+				document.getElementById("current-id").value = `https://youtu.be/${results[1].id}`;
+				document.getElementById("current-desc").value = results[1].description;
+				document.getElementById("current-ext-link").href = `https://youtu.be/${results[1].id}`;
+
+				charCount = document.getElementById("current-char-count");
+				const length = results[1].description.length;
+				charCount.textContent = `${length} character${length == 1 ? "" : "s"} used`;
+				if (length < 150 || length > 200) {
+					charCount.style.color = "#F44336";
+				}
+
+				if (results[0].id != results[1].id) {
+					document.documentElement.setAttribute("data-yt-update", "");
+					document.getElementById("new-thumbnail").src = `http://i3.ytimg.com/vi/${results[0].id}/0.jpg`;
+					document.getElementById("new-id").value = `https://youtu.be/${results[0].id}`;
+					document.getElementById("new-ext-link").href = `https://youtu.be/${results[0].id}`;
+					id = results[0].id;
+					invalidID = false;
+				}
+			}).catch(function(e) {
+				document.documentElement.removeAttribute("data-yt-loading");
+				document.documentElement.setAttribute("data-yt-error", "");
+			});
+		}
+
+		document.getElementById("new-id").addEventListener("keyup", function() {
+			let match;
+			if (match = this.value.match(/(?:https?:\/\/)?(?:www\.|m\.)?youtube\.com\/watch\?(?:.*?=.*?&)*?v=([^&]+?)(?:&.*?=.*?)*?$/i)) {
+				id = match[1];
+			} else if (match = this.value.match(/(?:https?:\/\/)?(?:www\.|m\.)?youtu\.be\/([^?]+?)(?:\?(?:.*?=.*?)?(?:&.*?=.*?)*?)?$/i)) {
+				id = match[1];
+			} else {
+				id = this.value;
+			}
+			id = id.trim();
+			thumbnail = document.getElementById("new-thumbnail");
+			thumbnail.src = `http://i3.ytimg.com/vi/${id}/0.jpg`;
+			thumbnail.style.opacity = id ? "" : "0";
+			document.getElementById("new-ext-link").href = `https://youtu.be/${id}`;
+		});
+
+		const newCharCount = document.getElementById("new-char-count");
+		document.getElementById("new-desc").addEventListener("keyup", function() {
+			desc = this.value;
+			const length = desc.length;
+			newCharCount.textContent = `${length} character${length == 1 ? "" : "s"} used`;
+			invalidDesc = length < 150 || length > 200
+			newCharCount.style.color = invalidDesc ? "#F44336" : "";
+		});
+
+		document.getElementById("new-thumbnail").addEventListener("load", function() {
+			invalidID = this.naturalWidth != 480;
+		});
+
+		document.getElementById("submit").addEventListener("click", function() {
+			if (invalidID) {
+				document.documentElement.setAttribute("data-bad-id", "");
+				document.getElementById("modal-change").focus();
+			} else if (invalidDesc) {
+				document.documentElement.setAttribute("data-bad-desc", "");
+				document.getElementById("modal-change").focus();
+			} else {
+				submit();
+			}
+		});
+
+		document.getElementById("modal-change").addEventListener("click", function() {
+			document.documentElement.removeAttribute("data-bad-id");
+			document.documentElement.removeAttribute("data-bad-desc");
+		});
+
+		document.getElementById("modal-cont").addEventListener("click", submit);
+
+		function escapeHTML(string) {
+			return string.replace(/&/g, "&amp;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;")
+				.replace(/"/g, "&quot;")
+				.replace(/'/g, "&#039;");
+		}
+
+		function submit() {
+			document.documentElement.setAttribute("data-submitting", "");
+			github.file.write("home.html", fileContents[1] + escapeHTML(id) + fileContents[3] + escapeHTML(desc) + fileContents[5], "Update YouTube video on homepage", fileSHA).then(function() {
+				location.reload();
+			}).catch(function(a) {
+				document.documentElement.removeAttribute("data-submitting");
+				document.documentElement.setAttribute("data-submission-error", "");
+			});
+		}
+	}();
+</script>
+
+</body>
+</html>
