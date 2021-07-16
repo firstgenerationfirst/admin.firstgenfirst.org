@@ -1,0 +1,29 @@
+{%- if include.append -%}
+    {%- assign appendtext = include.append -%}
+    {%- if page.fonts -%}
+        {%- assign appendtext = appendtext | append: "&" -%}
+    {%- endif -%}
+{%- endif -%}
+{%- if page.fonts or appendtext -%}
+    <link href="https://fonts.googleapis.com/css2?{{- appendtext -}}{%- for font in page.fonts -%}
+        {%- unless forloop.first %}&{%- endunless -%}
+        family=
+        {%- if font.first -%}
+            {{- font.first[0] | split: " " | join: "+" -}}
+            :ital,wght@
+            {%- assign fontspecs = font.first[1] | join: "," | split: "," | sort -%}
+            {%- for fontspec in fontspecs -%}
+                {%- unless forloop.first -%};{%- endunless -%}
+                {%- capture ital -%}{{- fontspec | slice: -1 -}}{%-endcapture -%}
+                {%- if ital == "i" -%}
+                    {%- assign len = fontspec | size | minus: 1 -%}
+                    1,{{- fontspec | slice: 0, len -}}
+                {%- else -%}
+                    0,{{- fontspec -}}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- else -%}
+            {{- font | split: " " | join: "+" -}}
+        {%- endif -%}
+    {%- endfor -%}&display=swap" rel="stylesheet" type="text/css">
+{%- endif -%}

@@ -1,0 +1,204 @@
+---
+---
+{% include variables.scss %}
+
+:root[data-goog-logged-in="pending"] .goog-auth-yes,
+:root[data-goog-logged-in="pending"] .goog-auth-no,
+:root[data-goog-logged-in="true"] .goog-auth-pending,
+:root[data-goog-logged-in="true"] .goog-auth-no,
+:root[data-goog-logged-in="false"] .goog-auth-pending,
+:root[data-goog-logged-in="false"] .goog-auth-yes {
+    display: none;
+}
+
+html {
+	border-top: 1.5rem solid $theme-color;
+	box-sizing: border-box;
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	min-height: 100%;
+	box-sizing: border-box;
+}
+
+p, h1, h2, h3, h4, h5, h6, .text {
+	font-family: $Rubik;
+	font-weight: 300;
+	color: $text-color;
+}
+
+p {
+	font-size: 1.2rem;
+	line-height: 1.5;
+}
+
+.link {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	font-size: inherit;
+	background-color: transparent;
+	text-decoration: underline;
+	color: $theme-color;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		text-decoration: none;
+	}
+}
+
+button:not(.link), a.button {
+	padding: .4em 1em;
+	margin: 0;
+	font-family: $Oswald;
+	font-weight: 500;
+	background-color: transparent;
+	color: $theme-color;
+	border: 0;
+	font-size: 1.5rem;
+	border-radius: .4em;
+	cursor: pointer;
+	outline: 0;
+	text-decoration: none;
+	display: inline-block;
+	transition: background-color .1s ease-in-out,
+		color .1s ease-in-out;
+
+	&.destructive {
+		color: change-color($theme-color, $hue: 0deg);
+	}
+
+	&:hover,
+	&:focus {
+		background-color: scale-color(white, $lightness: -12%);
+		color: scale-color($theme-color, $lightness: -12%);
+
+		&.destructive {
+			color: scale-color(change-color($theme-color, $hue: 0deg), $lightness: -12%);
+		}
+	}
+
+	&:disabled {
+		color: change-color($theme-color, $saturation: 0);
+	}
+}
+
+input[type=text],
+input[type=search],
+input[type=tel],
+input[type=email],
+input[type=number],
+input[type=password],
+input[type=date],
+input[type=datetime-local],
+input[type=url],
+input:not([type]),
+textarea,
+select,
+.input-style {
+	@extend %focusable;
+	margin: 0;
+	padding: .2em .4em;
+	font-family: $Rubik;
+	font-weight: 300;
+	font-size: inherit;
+	box-shadow: 0 0.2em 0.3em rgba(0, 0, 0, 0.53);
+	border-radius: .25rem;
+	color: $text-color;
+	resize: none;
+	-webkit-appearance: none;
+}
+
+select {
+	cursor: pointer;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 100 100'%3E%3Cpolygon points='50,75 75,25 25,25'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: calc(100% - .2em);
+	background-size: 1em;
+	padding-right: 1.4em;
+}
+
+input[type="checkbox"].toggler {
+	vertical-align: middle;
+	font-size: inherit;
+	display: inline-block;
+	height: calc(1em + 2px);
+	width: calc(2em + 2px);
+	margin: 0 calc(-2em - 2px) 0 0;
+	border-radius: 0.5em;
+	position: relative;
+	cursor: pointer;
+	outline: 0;
+	opacity: 0;
+
+	&:checked + span {
+		&:after {
+			transform: translateX(1em) scale(0.8);
+			background-color: $theme-color;
+		}
+	}
+
+	&:focus + span,
+	&:hover + span {
+		transform: scale(1.1);
+		border-color: $theme-color;
+
+		&:before {
+			box-shadow: 0 0 .15em 0 transparentize($theme-color, .6) inset;
+		}
+	}
+
+	&:disabled {
+		border: 1px solid scale-color(change-color($theme-color, $saturation: 0%), $lightness: 50%);
+		pointer-events: none;
+
+		+ span:after {
+			background-color: scale-color(change-color($theme-color, $saturation: 0%), $lightness: 50%);
+		}
+
+		&:checked + span:after {
+			background-color: scale-color($theme-color, $lightness: 50%);
+		}
+	}
+
+	+ span {
+		vertical-align: middle;
+		display: inline-block;
+		height: 1em;
+		width: 2em;
+		border-radius: calc(0.5em + 1px);
+		position: relative;
+		pointer-events: none;
+		border: 1px solid change-color($theme-color, $saturation: 0%);
+		transform: scale(1);
+		transition: transform 0.2s ease-in-out;
+
+		&:before {
+			content: "";
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			left: 0;
+			top: 0;
+			background-color: white;
+			border-radius: inherit;
+			box-shadow: 0 0 .15em 0 rgba(0,0,0,.4) inset;
+		}
+	
+		&:after {
+			content: "";
+			position: absolute;
+			height: 100%;
+			width: 50%;
+			border-radius: inherit;
+			background-color: change-color($theme-color, $saturation: 0%);
+			left: 0;
+			transform: scale(0.8);
+			transition: transform 0.2s ease-in-out,
+				background-color 0.2s ease-in-out;
+		}
+	}
+}

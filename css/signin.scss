@@ -1,0 +1,8 @@
+---
+---
+{% include variables.scss %}
+
+body {
+	@include centering-flex;
+    align-items: center;
+}

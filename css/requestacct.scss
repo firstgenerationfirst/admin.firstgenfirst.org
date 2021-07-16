@@ -1,0 +1,25 @@
+---
+---
+{%- include variables.scss -%}
+
+body {
+    @include centering-flex;
+    padding: 0 1rem;
+    text-align: center;
+    align-items: center;
+
+    > * {
+        width: 100%;
+    }
+}
+
+#name {
+    @include body-width;
+    display: block;
+    margin: .5rem 0;
+    text-align: center;
+}
+
+#signout {
+    display: none;
+}

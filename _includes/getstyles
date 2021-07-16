@@ -1,0 +1,25 @@
+{%- if include.styles != nil -%}
+    {%- assign styles = include.styles -%}
+{%- elsif page.styles -%}
+    {%- if layout.styles -%}
+        {%- assign styles = page.styles | concat: layout.styles | uniq -%}
+    {%- else -%}
+        {%- assign styles = page.styles | uniq -%}
+    {%- endif -%}
+{%- elsif layout.styles -%}
+    {%- assign styles = layout.styles | uniq -%}
+{%- endif -%}
+{%- for style in styles -%}
+    {%- assign name = style -%}
+    {%- assign path = include.path | default: "/" -%}
+    {%- if style.first -%}
+        {%- assign name = style.first[0] -%}
+        {%- if style.first[1].external -%}
+            {%- assign path = "" -%}
+        {%- endif -%}
+        {%- if style.first[1].path -%}
+            {%- assign path = style.first[1].path -%}
+        {%- endif -%}
+    {%- endif -%}
+    <link href="{{ path }}{{ name }}" rel="stylesheet" type="text/css">
+{%- endfor -%}

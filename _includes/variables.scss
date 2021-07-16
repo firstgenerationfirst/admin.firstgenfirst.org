@@ -1,0 +1,70 @@
+$theme-color: #0288D1;
+$text-color: #37474F;
+$Helvetica: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+$Oswald: Oswald, sans-serif;
+$Rubik: Rubik, sans-serif;
+
+$content-width: 70rem;
+$shadow-with-color: 0 .2rem .25rem 0rem;
+$shadow: 0 .2rem .25rem 0rem rgba(0,0,0,.4);
+
+@mixin body-width {
+	width: $content-width;
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	box-sizing: border-box;
+}
+
+@mixin centering-flex ($direction: column) {
+	display: flex;
+	flex-direction: $direction;
+	justify-content: center;
+}
+
+$mobile: "only screen and (max-width: 767px)";
+
+@function css-min($args...) {
+	@return m#{i}n($args);
+};
+
+@function css-max($args...) {
+	@return m#{a}x($args);
+};
+
+@function str-replace($string, $search, $replace: '') {
+	$index: str-index($string, $search);
+	@if $index {
+		@return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+	}
+	@return $string;
+}
+
+%focusable {
+	box-sizing: border-box;
+	border: 0;
+	border-bottom: 3px solid #DDD;
+	outline: 0;
+	transition: border-bottom-color .2s ease-in-out;
+
+	&:not([readonly]):hover,
+	&:not([readonly]):focus,
+	&:not([readonly]):focus-within {
+		border-bottom-color: $theme-color;
+	}
+
+	&:not([readonly]):invalid:focus,
+	&:not([readonly])[aria-invalid]:not([aria-invalid="false"]):focus,
+	&:not([readonly]).invalid:focus,
+	&:not([readonly]):invalid:focus-within,
+	&:not([readonly])[aria-invalid]:not([aria-invalid="false"]):focus-within,
+	&:not([readonly]).invalid:focus-within {
+		border-bottom-color: change-color($theme-color, $hue: 60deg) !important;
+	}
+
+	&:not([readonly]):invalid,
+	&:not([readonly])[aria-invalid]:not([aria-invalid="false"]),
+	&:not([readonly]).invalid {
+		border-bottom-color: change-color($theme-color, $hue: 0deg) !important;
+	}
+}

@@ -1,11 +1,20 @@
 ---
 ---
-{% include sass_variables.scss %}
+{% include variables.scss %}
+
+[data-goog-logged-in="pending"] .goog-auth-yes,
+[data-goog-logged-in="pending"] .goog-auth-no,
+[data-goog-logged-in="true"] .goog-auth-pending,
+[data-goog-logged-in="true"] .goog-auth-no,
+[data-goog-logged-in="false"] .goog-auth-pending,
+[data-goog-logged-in="false"] .goog-auth-yes {
+    display: none;
+}
 
 html {
 	border-top: 1.5rem solid $theme-color;
 	box-sizing: border-box;
-	height: 100%;
+	min-height: 100%;
 }
 
 body {

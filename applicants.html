@@ -1,0 +1,25 @@
+---
+layout: default
+title: Applicant Responses
+auth: required
+react: true
+fonts:
+  - Fredoka One:
+      - 400
+styles:
+  - applicants.css
+scripts:
+  - applicant_spreadsheets.js:
+      afterbody: true
+  - applicants.js:
+      afterbody: true
+---
+<div id="content">
+    <div id="loading_react">
+        Loading Applicants...
+    </div>
+</div>
+<div id="gapi-failed">
+    Looks like something is taking a while to load. Make sure you have a stable internet connection and reload the page.
+    <button id="page-reload">Reload</button>
+</div>

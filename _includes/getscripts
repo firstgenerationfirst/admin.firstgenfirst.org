@@ -1,0 +1,40 @@
+{%- if include.scripts != nil -%}
+    {%- assign scripts = include.scripts -%}
+{%- elsif page.scripts -%}
+    {%- if layout.scripts -%}
+        {%- assign scripts = page.scripts | concat: layout.scripts | uniq -%}
+    {%- else -%}
+        {%- assign scripts = page.scripts | uniq -%}
+    {%- endif -%}
+{%- elsif layout.scripts -%}
+    {%- assign scripts = layout.scripts | uniq -%}
+{%- endif -%}
+{%- for script in scripts -%}
+    {%- assign name = script -%}
+    {%- assign path = include.path -%}
+    {%- assign bodydone = include.afterbody | default: false -%}
+    {%- assign async = false -%}
+    {%- assign crossorigin = false -%}
+    {%- assign afterbody = false -%}
+    {%- if script.first -%}
+        {%- assign name = script.first[0] -%}
+        {%- if script.first[1].external -%}
+            {%- assign path = "" -%}
+        {%- endif -%}
+        {%- if script.first[1].async -%}
+            {%- assign async = true -%}
+        {%- endif -%}
+        {%- if script.first[1].crossorigin -%}
+            {%- assign crossorigin = true -%}
+        {%- endif -%}
+        {%- if script.first[1].afterbody -%}
+            {%- assign afterbody = true -%}
+        {%- endif -%}
+        {%- if script.first[1].path -%}
+            {%- capture path -%}{{ script.first[1].path }}/{%- endcapture -%}
+        {%- endif -%}
+    {%- endif -%}
+    {%- if afterbody == bodydone -%}
+        <script type="text/{%- if include.usebabel -%}babel{%- else -%}javascript{%- endif -%}" src="{{ path }}{{ name }}"{%- if async -%} async{%- endif -%}{%- if crossorigin -%} crossorigin{%- endif -%}></script>
+    {%- endif -%}
+{%- endfor -%}

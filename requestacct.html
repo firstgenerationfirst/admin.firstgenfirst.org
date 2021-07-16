@@ -1,0 +1,22 @@
+---
+layout: default
+title: Request Account
+auth: optional
+styles:
+  - requestacct.css
+scripts:
+  - requestacct.js:
+      afterbody: true
+---
+<div class="goog-auth-pending">
+    <p>Please wait...</p>
+</div>
+<div class="goog-auth-yes" id="signout">
+    <p>You're already signed in to an account right now. Sign out first to request a new account.</p>
+    <button id="signout-btn">Sign Out</button>
+</div>
+<div class="goog-auth-no">
+    <p>Fill in your name below, then sign into the Gmail account you want to use.</p>
+    <input type="text" id="name" placeholder="Just a nick name to call you">
+    <button id="signin-btn" disabled>Sign In</button>
+</div>

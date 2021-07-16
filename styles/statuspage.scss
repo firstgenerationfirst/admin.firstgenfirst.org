@@ -1,6 +1,6 @@
 ---
 ---
-{% include sass_variables.scss %}
+{% include variables.scss %}
 
 #flex {
 	height: 100%;
@@ -64,7 +64,7 @@
 #icon svg {
 	display: block;
 	margin: 1em auto;
-	width: min(20em, 100% - 10rem);
+	width: css-min(20em, calc(100% - 10rem));
 
 	&#s202 {
 		stroke: transparentize($theme-color, .5);
