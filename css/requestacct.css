@@ -1,0 +1,7 @@
+body { display: flex; flex-direction: column; justify-content: center; padding: 0 1rem; text-align: center; align-items: center; }
+
+body > * { width: 100%; }
+
+#name { width: 70rem; max-width: 100%; margin-left: auto; margin-right: auto; box-sizing: border-box; display: block; margin: .5rem 0; text-align: center; }
+
+#signout { display: none; }

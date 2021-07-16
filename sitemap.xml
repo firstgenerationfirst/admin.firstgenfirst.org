@@ -7,6 +7,9 @@
 <loc>https://admin.firstgenfirst.org/500.html</loc>
 </url>
 <url>
+<loc>https://admin.firstgenfirst.org/applicants.html</loc>
+</url>
+<url>
 <loc>https://admin.firstgenfirst.org/errlogin.html</loc>
 </url>
 <url>
@@ -16,10 +19,10 @@
 <loc>https://admin.firstgenfirst.org/newteammember.html</loc>
 </url>
 <url>
-<loc>https://admin.firstgenfirst.org/signin.html</loc>
+<loc>https://admin.firstgenfirst.org/requestacct.html</loc>
 </url>
 <url>
-<loc>https://admin.firstgenfirst.org/uid.html</loc>
+<loc>https://admin.firstgenfirst.org/signin.html</loc>
 </url>
 <url>
 <loc>https://admin.firstgenfirst.org/unauthorized.html</loc>

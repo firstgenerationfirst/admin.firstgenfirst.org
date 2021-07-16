@@ -1,1 +1,35 @@
-#flex{height:100%;display:flex;flex-direction:column;justify-content:space-around;position:relative}#flex>div:nth-child(2){flex-basis:45%;display:flex;flex-direction:column;justify-content:space-around}#flex>div:nth-child(3){flex-basis:55%}#goback{position:absolute;width:100%;top:0;left:0;padding:.3rem 0}#goback a{font-family:Rubik,sans-serif;font-weight:300;color:#0288D1;font-size:1.2rem;padding:.3rem .7em;text-decoration:none}#goback a svg{position:relative;left:0;transition:left .2s ease-in-out;stroke-width:.2px;fill:none;stroke:currentColor;display:inline-block;height:.8em;vertical-align:middle}#goback a:hover svg,#goback a:focus svg{left:-.2em}#goback a:hover span,#goback a:focus span{text-decoration:underline}#icon svg{display:block;margin:1em auto;width:min(20em, 100% - 10rem)}#icon svg#s202{stroke:rgba(2,136,209,0.5);stroke-width:10px;fill:none}#icon svg#s202 polyline{stroke-linejoin:round;stroke-linecap:round}#icon svg#s500 #s-triangle{fill:none;stroke:rgba(2,136,209,0.5);stroke-width:10px;stroke-linejoin:round}#icon svg#s500 #s-exclamation{fill:rgba(2,136,209,0.5)}#icon svg#s404 #s-file{fill:rgba(2,136,209,0.5)}#icon svg#s404 #s-mouth{fill:none;stroke:rgba(2,136,209,0.5);stroke-width:8px;stroke-linecap:round}#icon svg#s404 .s-eye{fill:rgba(2,136,209,0.5)}h1{font-family:Oswald,sans-serif;text-align:center;font-size:clamp(10em, 15em, 50vw);margin:-.1em 0 0;color:#0288d1;line-height:1;font-weight:normal;font-weight:550}h2{margin:0;font-family:Rubik,sans-serif;font-weight:300;text-align:center;padding:0 1.5rem}
+#flex { height: 100%; display: flex; flex-direction: column; justify-content: space-around; position: relative; }
+
+#flex > div:nth-child(2) { flex-basis: 45%; display: flex; flex-direction: column; justify-content: space-around; }
+
+#flex > div:nth-child(3) { flex-basis: 55%; }
+
+#goback { position: absolute; width: 100%; top: 0; left: 0; padding: .3rem 0; }
+
+#goback a { font-family: Rubik, sans-serif; font-weight: 300; color: #0288D1; font-size: 1.2rem; padding: .3rem .7em; text-decoration: none; }
+
+#goback a svg { position: relative; left: 0; transition: left .2s ease-in-out; stroke-width: .2px; fill: none; stroke: currentColor; display: inline-block; height: .8em; vertical-align: middle; }
+
+#goback a:hover svg, #goback a:focus svg { left: -.2em; }
+
+#goback a:hover span, #goback a:focus span { text-decoration: underline; }
+
+#icon svg { display: block; margin: 1em auto; width: min(20em, calc(100% - 10rem)); }
+
+#icon svg#s202 { stroke: rgba(2, 136, 209, 0.5); stroke-width: 10px; fill: none; }
+
+#icon svg#s202 polyline { stroke-linejoin: round; stroke-linecap: round; }
+
+#icon svg#s500 #s-triangle { fill: none; stroke: rgba(2, 136, 209, 0.5); stroke-width: 10px; stroke-linejoin: round; }
+
+#icon svg#s500 #s-exclamation { fill: rgba(2, 136, 209, 0.5); }
+
+#icon svg#s404 #s-file { fill: rgba(2, 136, 209, 0.5); }
+
+#icon svg#s404 #s-mouth { fill: none; stroke: rgba(2, 136, 209, 0.5); stroke-width: 8px; stroke-linecap: round; }
+
+#icon svg#s404 .s-eye { fill: rgba(2, 136, 209, 0.5); }
+
+h1 { font-family: Oswald, sans-serif; text-align: center; font-size: clamp(10em, 15em, 50vw); margin: -.1em 0 0; color: #0288d1; line-height: 1; font-weight: normal; font-weight: 550; }
+
+h2 { margin: 0; font-family: Rubik, sans-serif; font-weight: 300; text-align: center; padding: 0 1.5rem; }

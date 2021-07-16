@@ -6,71 +6,11 @@
 	<title>Sign In &ndash; First Generation First Admin</title>
 	<meta name="robots" content="noindex,nofollow">
 	<link rel="preconnect" href="https://fonts.gstatic.com"> 
-	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@450;550&family=Rubik:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
-	<link href="/styles/base.css" rel="stylesheet" type="text/css">
-	
-	<link href="/styles/signin.css" rel="stylesheet" type="text/css">
-	
-</head>
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@450;550&family=Rubik:ital,wght@0,300;0,450;1,300&display=swap" rel="stylesheet"><meta name="google-signin-client_id" content="544519717939-mljfuqt4cd6it8on67gmptrnv964171e.apps.googleusercontent.com"><link href="/css/base.css" rel="stylesheet" type="text/css"><link href="/css/signin.css" rel="stylesheet" type="text/css"><script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
+	<script src="https://apis.google.com/js/platform.js" async defer id="gapi-script"></script><script src="/scripts/auth-optional.js"></script><script src="/scripts/auth-roles.js" async></script></head>
 <body>
-	
-	<script async defer src="https://apis.google.com/js/api.js" id="gapi-script"></script>
-<div>
-	<p>The page you are trying to access requires that you sign in to your Google account.</p>
-	<button id="signin">Sign In</button>
-</div>
-<script type="text/javascript">
-	!function() {
-		let params = {};
-		if (location.search) {
-			let kv = location.search.substring(1).split("&");
-			for (let i = kv.length - 1; i >= 0; i--) {
-				kv[i] = kv[i].split("=");
-				params[kv[i][0]] = kv[i][1];
-			}
-		}
-
-		let gapiLoaded = new Promise(function(resolve, reject) {
-			const script = document.getElementById("gapi-script");
-
-			function gapiLoaded2() {
-				gapi.load("client:auth2", function() {
-					gapi.client.init({
-						apiKey: "AIzaSyBLZkeVHg1qYygChbI9dEltdCm3UKF93X8",
-						clientId: "544519717939-mljfuqt4cd6it8on67gmptrnv964171e.apps.googleusercontent.com",
-						discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
-						scope: "https://www.googleapis.com/auth/spreadsheets"
-					}).then(resolve).catch(reject);
-				});
-			}
-
-			if (window.gapi) {
-				gapiLoaded2();
-			} else {
-				script.addEventListener("load", gapiLoaded2);
-				script.addEventListener("error", reject);
-			}
-		}).then(function() {
-			const auth2 = gapi.auth2.getAuthInstance();
-
-			document.getElementById("signin").addEventListener("click", function() {
-				auth2.signIn(); 
-			});
-
-			if (auth2.isSignedIn.get()) {
-				location.replace(params.back || "/");
-			}
-
-			auth2.isSignedIn.listen(function(signedIn) {
-				if (signedIn) {
-					location.replace(params.back || "/");
-				}
-			});
-		}).catch(function(e) {
-			throw e;
-		});
-	}();
-</script>
-
-</body>
+	<p>The page you are trying to access requires you to sign in.</p>
+<button id="signin">Sign In</button><script type="text/javascript" src="/minscripts/signin.js"></script></body>
 </html>

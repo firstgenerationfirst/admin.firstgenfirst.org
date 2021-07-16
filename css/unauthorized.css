@@ -1,0 +1,7 @@
+body { display: flex; flex-direction: column; justify-content: center; }
+
+p { text-align: center; max-width: calc(100% - 2rem); width: 60em; margin: 0 auto; padding: 1em 0; }
+
+#signin-btn { display: block; margin: 0 auto; }
+
+#attempts { color: red; font-weight: 400; display: none; padding: 1em 0 0; }

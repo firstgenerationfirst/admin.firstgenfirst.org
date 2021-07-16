@@ -1,0 +1,1 @@
+"use strict";user.readProfile.then(function(e){document.documentElement.setAttribute("data-fb-roles",e.roles.join(" "))}),user.logOut.then(function(){document.documentElement.removeAttribute("data-fb-roles")});
