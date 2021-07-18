@@ -14,7 +14,9 @@
   let roles = [];
   user.readProfile.then(function(profile) {
     roles = profile.roles;
+    IS_EDITOR = roles.includes("applicant_editor");
   });
+  let IS_EDITOR = false;
 
   const applicantMetadata = firebase.firestore().collection("applicant_submissions").doc("voting_metadata");
 
@@ -172,12 +174,26 @@
     }
 
     render() {
+      // We have the applicant's full ID. We want to separate that into year and ID number to make
+      // it easier to used in ApplicantModal.
       let focusedYear, focusedID;
       if (this.state.applicantFocus) {
         let [year, id] = this.state.applicantFocus.split("-");
         focusedYear = +year + 2000;
         focusedID = parseInt(id, 16);
       }
+
+      // Now we get the row index of that particular applicant so we can fetch its row later on.
+      let rowIndex;
+      if (this.state.applicantFocus) {
+        const data = this.state.spreadsheetData;
+        for (let i = data.rows.length - 1; i >= 0; i--) {
+          if (parseInt(data.rows[i][data.c_ID], 16) == focusedID) {
+            rowIndex = i;
+          }
+        }
+      }
+
       return (
         <React.Fragment>
           <SearchBar
@@ -212,6 +228,7 @@
             applicant={this.state.applicantFocus}
             year={focusedYear}
             id={focusedID}
+            applicantRowIndex={rowIndex}
             unbiasedMode={this.state.unbiasedMode}
             onUnfocus={this.onUnfocus.bind(this)}
           />
@@ -376,6 +393,14 @@
                 }
               };
 
+              // Make sure each row has the same number of columns as the header
+              for (let i = rows.length - 1; i >= 0; i--) {
+                const addCells = headers.length - rows[i].length;
+                if (addCells) {
+                  rows[i] = rows[i].concat(new Array(addCells).fill(""));
+                }
+              }
+
               // Google Sheets stores the data as strings. Use the translators to convert those
               // strings into the JavaScript values we expect.
               const translators = spreadsheetData[year].translate.from;
@@ -383,14 +408,6 @@
                 const index = colIndex(key);
                 for (const row of rows) {
                   row[index] = translators[key](row[index].trim());
-                }
-              }
-
-              // Make sure each row has the same number of columns as the header
-              for (let i = rows.length - 1; i >= 0; i--) {
-                const addCells = headers.length - rows[i].length;
-                if (addCells) {
-                  rows[i] = rows[i].concat(new Array(addCells).fill(""));
                 }
               }
 
@@ -757,7 +774,7 @@
         }
 
         // Go through all the words and look for matches in a set of fields.
-        const searchableFields = ["College", "Location"];
+        const searchableFields = ["Email", "College", "Location"];
         if (!this.props.unbiasedMode) {
           searchableFields.unshift("First", "Last");
         }
@@ -833,7 +850,7 @@
         let filteredBy = filteredByObjects[filteredIndex] || {};
         if (filteredBy.ID && this.props.detailOption != "#ID") {
           matchedQuery.push(
-            <div key={matchedQuery.length} className="whole_match">
+            <div key="ID" className="whole_match">
                #{this.props.year - 2000}-{row[data.c_ID]}
             </div>
           );
@@ -870,7 +887,7 @@
               effectiveLastName = matches;
             } else if (matches.length > 1 || typeof matches[0] != "string") {
               matchedQuery.push(
-                <div key={matchedQuery.length} className={isWholeMatch ? "whole_match" : "partial_match"}>
+                <div key={col} className={isWholeMatch ? "whole_match" : "partial_match"}>
                    {matches}
                 </div>
               );
@@ -878,34 +895,19 @@
           }
         }
 
-        let icons = null;
+        let icons = [];
         try {
           icons = row[data.c("Icons")];
-          icons = icons == NA ? null : icons;
+          icons = icons == NA ? [] : icons;
         } catch (err) {}
-        if (icons && this.props.detailOption == "Icons") {
-          icons = icons.split("|").map((icon, i) => ({
-            "!LI": (
-              <svg key={i} className="applicant_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <path d="M24.249,76.25977A1.82385,1.82385,0,0,1,22.418,74.42871v-49.749A1.82385,1.82385,0,0,1,24.249,22.84863h7.09619a1.82385,1.82385,0,0,1,1.83106,1.83106v42.5h24.187a1.82836,1.82836,0,0,1,1.9082,1.9082v5.34082a1.77338,1.77338,0,0,1-.5332,1.29688,1.86191,1.86191,0,0,1-1.375.53418Z"/>
-                <path d="M68.50391,76.25977a1.82384,1.82384,0,0,1-1.832-1.83106v-49.749a1.82384,1.82384,0,0,1,1.832-1.83106h7.17187a1.73607,1.73607,0,0,1,1.335.53418,1.83691,1.83691,0,0,1,.4961,1.29688v49.749a1.83359,1.83359,0,0,1-.4961,1.29688,1.73267,1.73267,0,0,1-1.335.53418Z"/>
-                <path className="fill_red" d="M3.0952,28.75317A1.76126,1.76126,0,0,1,4.041,27.71709a1.76176,1.76176,0,0,1,1.4011-.0587L98.28356,61.45a1.82449,1.82449,0,0,1,1.09459,2.34737l-2.4533,6.74038a1.73993,1.73993,0,0,1-.95869,1.07159,1.83967,1.83967,0,0,1-1.38813.02151L1.73653,37.83924a1.83651,1.83651,0,0,1-1.049-.90857,1.73618,1.73618,0,0,1-.0456-1.43711Z"/>
-              </svg>
-            ),
-            "!FG": (
-              <svg key={i} className="applicant_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <path d="M8.33936,76.26074A1.82385,1.82385,0,0,1,6.5083,74.42969V24.75732a1.85851,1.85851,0,0,1,.53418-1.37353,1.7659,1.7659,0,0,1,1.29688-.53418H41.4541a1.82974,1.82974,0,0,1,1.90772,1.90771v5.34082a1.73427,1.73427,0,0,1-.53418,1.33545,1.93532,1.93532,0,0,1-1.37354.4961H16.96143V46.42676H39.92822a1.82974,1.82974,0,0,1,1.90772,1.90771v5.34131a1.76668,1.76668,0,0,1-.53418,1.29688,1.85932,1.85932,0,0,1-1.37354.53418H16.96143V74.42969a1.7667,1.7667,0,0,1-.53418,1.29687,1.85851,1.85851,0,0,1-1.37354.53418Z"/>
-                <path d="M72.73926,77.02344A26.63592,26.63592,0,0,1,60.79785,74.582,17.80738,17.80738,0,0,1,53.167,67.52441,23.08256,23.08256,0,0,1,50.23,56.499q-.0769-3.27978-.07666-7.0581,0-3.7771.07666-7.13428a22.24425,22.24425,0,0,1,2.937-10.835,17.94968,17.94968,0,0,1,7.707-6.94336,26.77358,26.77358,0,0,1,11.86524-2.44189,29.218,29.218,0,0,1,9.7666,1.48779,22.53507,22.53507,0,0,1,6.98144,3.81543,16.89339,16.89339,0,0,1,4.19629,4.99756,11.57777,11.57777,0,0,1,1.48829,4.95947A1.33322,1.33322,0,0,1,94.79,38.49121a1.65,1.65,0,0,1-1.2207.458H85.71a1.80313,1.80313,0,0,1-1.14453-.30518,2.65331,2.65331,0,0,1-.68652-.91552A11.33568,11.33568,0,0,0,81.97168,34.562a10.29932,10.29932,0,0,0-3.51074-2.63232,13.20883,13.20883,0,0,0-5.72168-1.06836A12.00557,12.00557,0,0,0,64.46,33.60791q-3.08935,2.74731-3.31934,9.08008-.22851,6.63794,0,13.4292.23,6.48633,3.39551,9.30859A12.08116,12.08116,0,0,0,72.8916,68.249a14.78187,14.78187,0,0,0,6.1416-1.2207,9.40112,9.40112,0,0,0,4.27344-3.81543,12.69961,12.69961,0,0,0,1.56445-6.63769V54.21H75.56152a1.76287,1.76287,0,0,1-1.29687-.53418,1.85656,1.85656,0,0,1-.53418-1.374v-4.044a1.85811,1.85811,0,0,1,.53418-1.373,1.76666,1.76666,0,0,1,1.29687-.53418H93.79785a1.73969,1.73969,0,0,1,1.33594.53418,1.94074,1.94074,0,0,1,.49512,1.373v8.01172A21.15466,21.15466,0,0,1,92.84473,67.333a18.4408,18.4408,0,0,1-7.93555,7.17285A27.43188,27.43188,0,0,1,72.73926,77.02344Z"/>
-                <path className="fill_red" d="M3.0952,28.75317A1.76126,1.76126,0,0,1,4.041,27.71709a1.76176,1.76176,0,0,1,1.4011-.0587L98.28356,61.45a1.82449,1.82449,0,0,1,1.09459,2.34737l-2.4533,6.74038a1.73993,1.73993,0,0,1-.95869,1.07159,1.83967,1.83967,0,0,1-1.38813.02151L1.73653,37.83924a1.83651,1.83651,0,0,1-1.049-.90857,1.73618,1.73618,0,0,1-.0456-1.43711Z"/>
-              </svg>
-            )
-          })[icon] || null);
+        if (icons.length && this.props.detailOption == "Icons") {
+          icons = icons.map((icon) => spreadsheetData.ICONS[icon] || null);
         }
 
         rowComponents.push(
           this.props.unbiasedMode ? 
           <button
-            key={i}
+            key={(this.props.year - 2000) + "-" + row[data.c_ID]}
             className={"applicant_row applicant_status_" + status + (
               ~filteredIndex && (filteredIndex == 0 || data.rows[filteredRowIndexes[filteredIndex - 1]][data.c_Status] != data.rows[i][data.c_Status]) ? " br_top" : ""
             ) + (
@@ -935,7 +937,7 @@
           </button>
           :
           <button
-            key={i}
+            key={(this.props.year - 2000) + "-" + row[data.c_ID]}
             className={"applicant_row applicant_status_" + status + (
               ~filteredIndex && (filteredIndex == 0 || data.rows[filteredRowIndexes[filteredIndex - 1]][data.c_Status] != data.rows[i][data.c_Status]) ? " br_top" : ""
             ) + (
@@ -1018,6 +1020,7 @@
   class ApplicantModal extends React.Component {
     constructor(props) {
       super(props);
+      
       this.state = {
         edits: {},
         editing: false,
@@ -1026,7 +1029,8 @@
         pendingSheetsRow: null,
         pendingRowIndex: null,
         failedUpload: false,
-        warnUnsavedEdit: false
+        warnUnsavedEdit: false,
+        activeUnusedIcons: false
       };
 
       window.addEventListener("keydown", function(e) {
@@ -1060,6 +1064,8 @@
         birthday, birthday_elim,
         prompts = [],
         additional_comments,
+        icons = [],
+        unusedIcons = [],
         modal_message;
 
       if (data && !isNaN(year)) {
@@ -1116,17 +1122,22 @@
         location_elim = check_elim("Location");
         class_year = formatters.Year(column("Year", NA));
         class_year_elim = check_elim("Year");
+
+        // Unbiased mode hides the applicant's phone number.
         if (this.props.unbiasedMode) {
           phone_number = "(***) ***-****";
         } else {
           phone_number = formatters.Phone(column("Phone", NA));
           phone_number_elim = check_elim("Phone");
         }
+
+        // Unbiased mode hides pronouns.
         if (this.props.unbiasedMode) {
           pronouns = "— / — / —";
         } else {
           pronouns = formatters.Pronouns(column("Pronouns", NA));
         }
+
         // If unbiased mode is enabled, the birthday is hidden and we only know how old they are in-
         // stead.
         if (this.props.unbiasedMode) {
@@ -1153,25 +1164,73 @@
         
         let ssData = spreadsheetData[this.props.year];
         for (let i = 0, l = ssData.prompts.length; i < l; i++) {
+          // Get the prompt's header name and its corresponding column index.
           const header = ssData.mapping.Prompts[i];
           const index = data.headers.indexOf(header);
+
           if (!~index) {
             continue;
           }
-          prompts.push([
-            ssData.prompts[i],
-            row[index].trim(),
-            i
-          ]);
+
+          // Add the React elements that will display this prompt.
+          prompts.push(
+            <div key={i} data-prompt-index={i} className={"modal_prompt" + (this.state.editing ? " editing" : "")}>
+              <h4 className="modal_header">
+                <span>{ssData.prompts[i]}</span>
+              </h4>
+              {
+                this.state.editing ?
+                <ResizableTextarea defaultValue={row[index].trim()} onChange={e => this.onEditPrompt(e, i)}/> :
+                <div
+                  className="modal_prompt_response"
+                  onInput={e => undefined}
+                >{row[index].trim()}</div>
+              }
+            </div>
+          );
         }
 
+        // Get additional comments.
         additional_comments = column("Comments", "").trim();
+        // If the applicant wrote "N/A" themselves, we can just exclude it.
         if (additional_comments.match(/^[nN]\s*\/?\s*[aA]$/)) {
           additional_comments = "";
+        }
+
+        // Get the applicant's icons. If we are currently in the process of editing Icons, we want
+        // to display our current edit's set instead of the actual set of icons from the spread-
+        // sheet.
+        let iconNames = "Icons" in this.state.edits ? this.state.edits.Icons : column("Icons", []);
+        // Turn the icon names into React SVG elements.
+        icons = iconNames.map((icon) => spreadsheetData.ICONS[icon] || null);
+
+        // Only get the list of `unusedIcons` if we are in editing mode since that's the only place
+        // we would see them.
+        if (this.state.editing) {
+          // Start with the full list of icons.
+          unusedIcons = Object.keys(spreadsheetData.ICONS);
+          // Remove any icons that are found in the `icons` list.
+          for (let i = iconNames.length - 1; i >= 0; i--) {
+            let index = unusedIcons.indexOf(iconNames[i]);
+            if (~index) {
+              unusedIcons.splice(index, 1);
+            }
+          }
+          // Turn these icon names into SVG elements too.
+          unusedIcons = unusedIcons.map((icon) => spreadsheetData.ICONS[icon] || null);
+
+          // Generate the elements that will be red Xs that delete icons.
+          for (let i = iconNames.length - 1; i >= 0; i--) {
+            if (icons[i] !== null) {
+              icons.splice(i + 1, 0, <button key={iconNames[i] + "-deleter"} className="modal_icon_deleter nostyle"><div></div></button>);
+            }
+          }
         }
       } else {
         document.documentElement.setAttribute("data-is-focusing", "false");
       }
+
+      // If any eliminators are active, we need to show the Make Ineligible button.
       const has_elim = (
         income_elim ||
         household_members_elim ||
@@ -1186,22 +1245,6 @@
         phone_number_elim ||
         birthday_elim
       );
-
-      prompts = prompts.map(function(item, i) {
-        return <div key={i} data-prompt-index={item[2]} className={"modal_prompt" + (this.state.editing ? " editing" : "")}>
-          <h4 className="modal_header">
-            <span>{item[0]}</span>
-          </h4>
-          {
-            this.state.editing ?
-            <ResizableTextarea defaultValue={item[1]} onChange={e => this.onEditPrompt(e, item[2])}/> :
-            <div
-              className="modal_prompt_response"
-              onInput={e => undefined}
-            >{item[1]}</div>
-          }
-        </div>
-      }.bind(this));
 
       let comments_prompt = this.state.editing || additional_comments != "" ?
         <div className={"modal_prompt" + (this.state.editing ? " editing" : "")}>
@@ -1250,7 +1293,7 @@
         >
           <div
             id="applicant_modal"
-            onClick={e => e.stopPropagation()}
+            onClick={this.onClickModal.bind(this)}
           >
             {
               modal_message ?
@@ -1301,8 +1344,36 @@
                   </select> :
                   status
                 }</h3>
+                <div className={"modal_icons" + (this.state.editing ? " editing" : icons.length ? "" : " hidden")} onClick={this.onDeleteIcon.bind(this)}>
+                  {icons}
+                  {
+                    this.state.editing && unusedIcons.length ?
+                    <svg
+                      className="modal_icon add_icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 100 100"
+                      onClick={e => this.state.activeUnusedIcons ? null : (e.stopPropagation(),this.setState({activeUnusedIcons: true}))}
+                    >
+                      <title>Add another</title>
+                      <path d="M10,40,40,40,40,10,60,10,60,40,90,40,90,60,60,60,60,90,40,90,40,60,10,60Z"/>
+                    </svg>
+                    : null
+                  }
+                </div>
                 {
-                  has_elim && roles.includes("applicant_editor") && !this.state.editing ?
+                  this.state.editing ?
+                  <div
+                    className={"modal_unused_icons" + (this.state.activeUnusedIcons ? "" : " hidden")}
+                    onClick={this.onAddIcon.bind(this)}
+                  >
+                    <div>
+                      {unusedIcons}
+                    </div>
+                  </div> :
+                  null
+                }
+                {
+                  has_elim && IS_EDITOR && !this.state.editing ?
                   <button
                     className="destructive"
                     onClick={e => this.setState({edits: {Status: spreadsheetData.Enum.STATUS.INELIGIBLE}}, this.onEndEdit.bind(this))}
@@ -1539,7 +1610,7 @@
                   <button className="destructive" onClick={this.onAbortEdit.bind(this)}>Cancel</button>
                   : null
                 }{
-                  roles.includes("applicant_editor") && !this.state.editing ?
+                  IS_EDITOR && !this.state.editing ?
                   <button onClick={this.onStartEdit.bind(this)}>Edit</button>
                   : null
                 }{
@@ -1559,6 +1630,15 @@
       const scrollTop = elem.scrollTop;
       const scrollBottom = elem.scrollHeight - elem.scrollTop - elem.clientHeight;
       elem.style.boxShadow = `0 1.2em 0.25em -1em rgba(0,0,0,${Math.min(scrollTop / 16 * .4, .4)}) inset, 0 -1.2em 0.25em -1em rgba(0,0,0,${Math.min(scrollBottom / 16 * .4, .4)}) inset`;
+    }
+
+    onClickModal(e) {
+      e.stopPropagation();
+      if (this.state.activeUnusedIcons) {
+        this.setState({
+          activeUnusedIcons: false
+        });
+      }
     }
 
     onUnfocus(e) {
@@ -1642,17 +1722,7 @@
         return;
       }
       const data = this.props.spreadsheetData;
-      let rowIndexes = [];
-      for (let i = data.rows.length - 1; i >= 0; i--) {
-        if (parseInt(data.rows[i][data.c_ID], 16) == this.props.id) {
-          rowIndexes.push(i);
-        }
-      }
-      if (rowIndexes.length != 1) {
-        return;
-      }
-
-      let row = data.rows[rowIndexes[0]].slice();
+      let row = data.rows[this.props.applicantRowIndex].slice();
       for (const col in this.state.edits) {
         if (col == "Prompts") {
           for (const promptIndex in this.state.edits.Prompts) {
@@ -1688,7 +1758,7 @@
 
       gapi.client.sheets.spreadsheets.values.update({
         spreadsheetId: spreadsheetData[this.props.year].id,
-        range: `'${spreadsheetData[this.props.year].sheet}'!${rowIndexes[0] + 2}:${rowIndexes[0] + 2}`,
+        range: `'${spreadsheetData[this.props.year].sheet}'!${this.props.applicantRowIndex + 2}:${this.props.applicantRowIndex + 2}`,
         valueInputOption: "RAW"
       }, {
         values: [sheetsRow]
@@ -1714,7 +1784,7 @@
         failedUpload: false,
         pendingRow: row,
         pendingSheetsRow: sheetsRow,
-        pendingRowIndex: rowIndexes[0]
+        pendingRowIndex: this.props.applicantRowIndex
       });
     }
 
@@ -1747,6 +1817,90 @@
       } else {
         e.currentTarget.value = e.currentTarget.getAttribute("data-original-value");
       }
+    }
+
+    onAddIcon(e) {
+      e.stopPropagation();
+      let node = e.target;
+      let iconName;
+      while (node != e.currentTarget) {
+        if (iconName = node.getAttribute("data-icon-name")) {
+          break;
+        }
+        node = node.parentNode;
+      }
+      if (!iconName) {
+        return;
+      }
+      
+      let icons;
+      if ("Icons" in this.state.edits) {
+        icons = this.state.edits.Icons;
+      } else {
+        const data = this.props.spreadsheetData;
+        let iconIndex;
+        try {
+          iconIndex = data.c("Icons");
+        } catch (err) {
+          return;
+        }
+        icons = data.rows[this.props.applicantRowIndex][iconIndex].slice();
+      }
+      // If the icon is already in the list, we don't want to duplicate it.
+      if (~icons.indexOf(iconName)) {
+        return;
+      }
+      icons.push(iconName);
+      // If there are no more icons to show in the menu, get rid of it.
+      if (icons.length == Object.keys(spreadsheetData.ICONS).length) {
+        this.setState({
+          activeUnusedIcons: false
+        });
+      }
+      this.onMakeEdit("Icons", icons);
+      // We update the state without causing a re-render in onMakeEdit, but in this case, we do want
+      // to cause a re-render.
+      this.forceUpdate();
+    }
+
+    onDeleteIcon(e) {
+      let node = e.target;
+      let iconName;
+      while (node != e.currentTarget) {
+        if (iconName = node.getAttribute("data-icon-name") || node.previousElementSibling.getAttribute("data-icon-name")) {
+          break;
+        }
+        node = node.parentNode;
+      }
+      if (!iconName) {
+        return;
+      }
+      e.stopPropagation();
+
+      // If we have already made edits to the Icons, use that updated list instead of getting the
+      // old list of Icons from before we started editing.
+      let icons;
+      if ("Icons" in this.state.edits) {
+        icons = this.state.edits.Icons;
+      } else {
+        const data = this.props.spreadsheetData;
+        let iconIndex;
+        try {
+          iconIndex = data.c("Icons");
+        } catch (err) {
+          return;
+        }
+        icons = data.rows[this.props.applicantRowIndex][iconIndex].slice();
+      }
+      let index = icons.indexOf(iconName);
+      if (!~index) {
+        return;
+      }
+      icons.splice(index, 1);
+      this.onMakeEdit("Icons", icons);
+      // We update the state without causing a re-render in onMakeEdit, but in this case, we do want
+      // to cause a re-render.
+      this.forceUpdate();
     }
 
     onEditStatus(e) {

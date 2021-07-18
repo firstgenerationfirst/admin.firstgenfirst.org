@@ -20,15 +20,15 @@ p { font-size: 1.2rem; line-height: 1.5; }
 
 .link:hover, .link:focus { text-decoration: none; }
 
-button:not(.link), a.button { padding: .4em 1em; margin: 0; font-family: Oswald, sans-serif; font-weight: 500; background-color: transparent; color: #0288D1; border: 0; font-size: 1.5rem; border-radius: .4em; cursor: pointer; outline: 0; text-decoration: none; display: inline-block; transition: background-color .1s ease-in-out, color .1s ease-in-out; }
+button:not(.link):not(.nostyle), a.button { padding: .4em 1em; margin: 0; font-family: Oswald, sans-serif; font-weight: 500; background-color: transparent; color: #0288D1; border: 0; font-size: 1.5rem; border-radius: .4em; cursor: pointer; outline: 0; text-decoration: none; display: inline-block; transition: background-color .1s ease-in-out, color .1s ease-in-out; }
 
-button.destructive:not(.link), a.button.destructive { color: #d10202; }
+button.destructive:not(.link):not(.nostyle), a.button.destructive { color: #d10202; }
 
-button:not(.link):hover, button:not(.link):focus, a.button:hover, a.button:focus { background-color: #e0e0e0; color: #0278b8; }
+button:not(.link):not(.nostyle):hover, button:not(.link):not(.nostyle):focus, a.button:hover, a.button:focus { background-color: #e0e0e0; color: #0278b8; }
 
-button.destructive:not(.link):hover, button.destructive:not(.link):focus, a.button.destructive:hover, a.button.destructive:focus { color: #b80202; }
+button.destructive:not(.link):not(.nostyle):hover, button.destructive:not(.link):not(.nostyle):focus, a.button.destructive:hover, a.button.destructive:focus { color: #b80202; }
 
-button:not(.link):disabled, a.button:disabled { color: #6a6a6a; }
+button:not(.link):not(.nostyle):disabled, a.button:disabled { color: #6a6a6a; }
 
 input[type=text], input[type=search], input[type=tel], input[type=email], input[type=number], input[type=password], input[type=date], input[type=datetime-local], input[type=url], input:not([type]), textarea, select, .input-style { margin: 0; padding: .2em .4em; font-family: Rubik, sans-serif; font-weight: 300; font-size: inherit; box-shadow: 0 0.2em 0.3em rgba(0, 0, 0, 0.53); border-radius: .25rem; color: #37474F; resize: none; -webkit-appearance: none; }
 

@@ -106,9 +106,9 @@ body { display: flex; flex-direction: column; padding: 1rem; }
 
 #applicant_table .applicant_row .applicant_match + .applicant_icons { display: flex; }
 
-#applicant_table .applicant_row .applicant_match + .applicant_icons .applicant_icon { height: 1.4em; display: block; fill: currentColor; margin-right: .5em; }
+#applicant_table .applicant_row .applicant_match + .applicant_icons svg { height: 1.4em; display: block; fill: currentColor; margin-right: .5em; }
 
-#applicant_table .applicant_row .applicant_match + .applicant_icons .applicant_icon .fill_red { fill: #d10202; }
+#applicant_table .applicant_row .applicant_match + .applicant_icons svg .fill_red { fill: #d10202; }
 
 #applicant_table #applicant_message { justify-content: center; }
 
@@ -148,7 +148,7 @@ body { display: flex; flex-direction: column; padding: 1rem; }
 
 #applicant_modal #modal_content h1 { font-family: Oswald, sans-serif; font-size: 2rem; margin: 1rem 0 .2rem; padding-bottom: 3px; }
 
-#applicant_modal #modal_content h1 input { padding-top: 0; padding-bottom: 0; margin-bottom: -3px; }
+#applicant_modal #modal_content h1 input { padding-top: 0; padding-bottom: 0; margin-bottom: -3px; max-width: 100%; box-sizing: border-box; }
 
 #applicant_modal #modal_content h2 { font-family: Oswald, sans-serif; font-size: 1.4rem; margin: 0; padding-bottom: 3px; }
 
@@ -156,15 +156,125 @@ body { display: flex; flex-direction: column; padding: 1rem; }
 
 #applicant_modal #modal_content h2 span:last-child { font-family: Rubik, sans-serif; font-weight: 300; font-size: 80%; color: #0288D1; }
 
-#applicant_modal #modal_content h3 { font-family: Rubik, sans-serif; font-weight: 400; font-size: 1.2rem; margin: 1.5rem 0 0; padding: 0.2em 0 calc(.2em + 3px); }
+#applicant_modal #modal_content h3 { font-family: Rubik, sans-serif; font-weight: 400; font-size: 1.2rem; margin: 1rem 0 0; padding: .2em 0; }
 
-#applicant_modal #modal_content h3 select { margin-top: -.2em; margin-bottom: calc(-.2em - 3px); padding-left: 1.4em; }
+#applicant_modal #modal_content h3 select { margin-top: -.2em; margin-bottom: -2em; padding-bottom: calc(.2em - 3px); padding-left: 1.4em; }
 
 #applicant_modal #modal_content button.destructive { font-size: 1.2rem; align-self: center; }
 
 #applicant_modal #modal_content input, #applicant_modal #modal_content select { font-family: inherit; text-align: center; -moz-text-align-last: center; text-align-last: center; color: inherit; font-weight: 400; }
 
 #applicant_modal #modal_content input, #applicant_modal #modal_content select, #applicant_modal #modal_content textarea { background-color: transparent; }
+
+#applicant_modal .modal_icons { display: inline-block; justify-content: center; overflow: visible; width: 20em; max-width: 100%; margin: max(calc(7px + .2em), 0.5em) 0 0; border-radius: .5em; line-height: 0; }
+
+#applicant_modal .modal_icons.hidden { display: none; }
+
+#applicant_modal .modal_icons svg { color: #37474F; height: 1.4em; display: inline-block; fill: currentColor; border-radius: .25em; padding: .2em; margin: 0 .375rem; }
+
+#applicant_modal .modal_icons svg .fill_red { fill: #d10202; }
+
+#applicant_modal .modal_icons .modal_icon_deleter { margin: -7px calc(-7px + .375rem) 0 calc(-11px - .375rem); cursor: pointer; border-radius: 50%; box-sizing: content-box; padding: 0; vertical-align: top; position: relative; border: none; background-color: transparent; }
+
+#applicant_modal .modal_icons .modal_icon_deleter div { background-color: #d10202; background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 10 10' stroke-width='1.25' stroke='white'><line x1='-2.5' y1='-2.5' x2='2.5' y2='2.5'/><line x1='2.5' y1='-2.5' x2='-2.5' y2='2.5'/></svg>"); height: 12px; width: 12px; border-radius: 50%; border: 3px solid transparent; background-clip: content-box; transition: transform .15s ease-in-out; }
+
+#applicant_modal .modal_icons svg:hover + .modal_icon_deleter div, #applicant_modal .modal_icons .modal_icon_deleter:hover div { transform: scale(1.33333); }
+
+#applicant_modal .modal_icons .add_icon { cursor: pointer; }
+
+@-webkit-keyframes wobble { 0% { transform: rotate(2deg);
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in; }
+  100% { transform: rotate(-2deg);
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out; } }
+
+@keyframes wobble { 0% { transform: rotate(2deg);
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in; }
+  100% { transform: rotate(-2deg);
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out; } }
+
+#applicant_modal .modal_icons.editing svg { -webkit-animation: wobble infinite alternate; animation: wobble infinite alternate; box-shadow: 0 0 0 1px #6a6a6a; cursor: pointer; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter { -webkit-animation: wobble infinite alternate; animation: wobble infinite alternate; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+1):not(.add_icon) { -webkit-animation-duration: 0.0903782396s; animation-duration: 0.0903782396s; transform-origin: 0.6751185684rem 1.0561139524rem; -webkit-animation-delay: -0.9476148718s; animation-delay: -0.9476148718s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+2) { -webkit-animation-duration: 0.0903782396s; animation-duration: 0.0903782396s; transform-origin: calc(11px - 1.8rem + 0.6751185684rem) calc(7px + 1.0561139524rem); -webkit-animation-delay: -0.9476148718s; animation-delay: -0.9476148718s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+2):not(.add_icon) { -webkit-animation-duration: 0.1201572358s; animation-duration: 0.1201572358s; transform-origin: 0.6365330467rem 0.8797260085rem; -webkit-animation-delay: -0.2917558919s; animation-delay: -0.2917558919s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+3) { -webkit-animation-duration: 0.1201572358s; animation-duration: 0.1201572358s; transform-origin: calc(11px - 1.8rem + 0.6365330467rem) calc(7px + 0.8797260085rem); -webkit-animation-delay: -0.2917558919s; animation-delay: -0.2917558919s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+3):not(.add_icon) { -webkit-animation-duration: 0.1385023985s; animation-duration: 0.1385023985s; transform-origin: 1.3597867258rem 0.9796011247rem; -webkit-animation-delay: -0.2638222289s; animation-delay: -0.2638222289s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+4) { -webkit-animation-duration: 0.1385023985s; animation-duration: 0.1385023985s; transform-origin: calc(11px - 1.8rem + 1.3597867258rem) calc(7px + 0.9796011247rem); -webkit-animation-delay: -0.2638222289s; animation-delay: -0.2638222289s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+4):not(.add_icon) { -webkit-animation-duration: 0.1163212863s; animation-duration: 0.1163212863s; transform-origin: 0.493955942rem 1.3784576187rem; -webkit-animation-delay: -0.3132185905s; animation-delay: -0.3132185905s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+5) { -webkit-animation-duration: 0.1163212863s; animation-duration: 0.1163212863s; transform-origin: calc(11px - 1.8rem + 0.493955942rem) calc(7px + 1.3784576187rem); -webkit-animation-delay: -0.3132185905s; animation-delay: -0.3132185905s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+5):not(.add_icon) { -webkit-animation-duration: 0.10446157s; animation-duration: 0.10446157s; transform-origin: 1.4463691203rem 1.1931459981rem; -webkit-animation-delay: -0.5530048125s; animation-delay: -0.5530048125s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+6) { -webkit-animation-duration: 0.10446157s; animation-duration: 0.10446157s; transform-origin: calc(11px - 1.8rem + 1.4463691203rem) calc(7px + 1.1931459981rem); -webkit-animation-delay: -0.5530048125s; animation-delay: -0.5530048125s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+6):not(.add_icon) { -webkit-animation-duration: 0.1180475353s; animation-duration: 0.1180475353s; transform-origin: 1.6131210157rem 0.7494217591rem; -webkit-animation-delay: -0.2367317166s; animation-delay: -0.2367317166s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+7) { -webkit-animation-duration: 0.1180475353s; animation-duration: 0.1180475353s; transform-origin: calc(11px - 1.8rem + 1.6131210157rem) calc(7px + 0.7494217591rem); -webkit-animation-delay: -0.2367317166s; animation-delay: -0.2367317166s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+7):not(.add_icon) { -webkit-animation-duration: 0.1418126727s; animation-duration: 0.1418126727s; transform-origin: 0.1360969413rem 1.1064297368rem; -webkit-animation-delay: -0.0799545869s; animation-delay: -0.0799545869s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+8) { -webkit-animation-duration: 0.1418126727s; animation-duration: 0.1418126727s; transform-origin: calc(11px - 1.8rem + 0.1360969413rem) calc(7px + 1.1064297368rem); -webkit-animation-delay: -0.0799545869s; animation-delay: -0.0799545869s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+8):not(.add_icon) { -webkit-animation-duration: 0.1488231918s; animation-duration: 0.1488231918s; transform-origin: 0.9767374712rem 0.5654861076rem; -webkit-animation-delay: -0.5733724157s; animation-delay: -0.5733724157s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+9) { -webkit-animation-duration: 0.1488231918s; animation-duration: 0.1488231918s; transform-origin: calc(11px - 1.8rem + 0.9767374712rem) calc(7px + 0.5654861076rem); -webkit-animation-delay: -0.5733724157s; animation-delay: -0.5733724157s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+9):not(.add_icon) { -webkit-animation-duration: 0.1590954612s; animation-duration: 0.1590954612s; transform-origin: 0.3614125228rem 1.686493954rem; -webkit-animation-delay: -0.4829004973s; animation-delay: -0.4829004973s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+10) { -webkit-animation-duration: 0.1590954612s; animation-duration: 0.1590954612s; transform-origin: calc(11px - 1.8rem + 0.3614125228rem) calc(7px + 1.686493954rem); -webkit-animation-delay: -0.4829004973s; animation-delay: -0.4829004973s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+10):not(.add_icon) { -webkit-animation-duration: 0.1465009392s; animation-duration: 0.1465009392s; transform-origin: 1.2116003637rem 0.7488874199rem; -webkit-animation-delay: -0.2796566442s; animation-delay: -0.2796566442s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+11) { -webkit-animation-duration: 0.1465009392s; animation-duration: 0.1465009392s; transform-origin: calc(11px - 1.8rem + 1.2116003637rem) calc(7px + 0.7488874199rem); -webkit-animation-delay: -0.2796566442s; animation-delay: -0.2796566442s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+11):not(.add_icon) { -webkit-animation-duration: 0.1431903053s; animation-duration: 0.1431903053s; transform-origin: 1.5837360994rem 0.7867591921rem; -webkit-animation-delay: -0.5786734511s; animation-delay: -0.5786734511s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+12) { -webkit-animation-duration: 0.1431903053s; animation-duration: 0.1431903053s; transform-origin: calc(11px - 1.8rem + 1.5837360994rem) calc(7px + 0.7867591921rem); -webkit-animation-delay: -0.5786734511s; animation-delay: -0.5786734511s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+12):not(.add_icon) { -webkit-animation-duration: 0.1374632649s; animation-duration: 0.1374632649s; transform-origin: 0.8557845374rem 0.8947554059rem; -webkit-animation-delay: -0.3925562454s; animation-delay: -0.3925562454s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+13) { -webkit-animation-duration: 0.1374632649s; animation-duration: 0.1374632649s; transform-origin: calc(11px - 1.8rem + 0.8557845374rem) calc(7px + 0.8947554059rem); -webkit-animation-delay: -0.3925562454s; animation-delay: -0.3925562454s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+13):not(.add_icon) { -webkit-animation-duration: 0.1375373793s; animation-duration: 0.1375373793s; transform-origin: 1.2782658357rem 0.3355254847rem; -webkit-animation-delay: -0.484961837s; animation-delay: -0.484961837s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+14) { -webkit-animation-duration: 0.1375373793s; animation-duration: 0.1375373793s; transform-origin: calc(11px - 1.8rem + 1.2782658357rem) calc(7px + 0.3355254847rem); -webkit-animation-delay: -0.484961837s; animation-delay: -0.484961837s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+14):not(.add_icon) { -webkit-animation-duration: 0.1267488224s; animation-duration: 0.1267488224s; transform-origin: 0.1183320167rem 1.7244662981rem; -webkit-animation-delay: -0.5198811477s; animation-delay: -0.5198811477s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+15) { -webkit-animation-duration: 0.1267488224s; animation-duration: 0.1267488224s; transform-origin: calc(11px - 1.8rem + 0.1183320167rem) calc(7px + 1.7244662981rem); -webkit-animation-delay: -0.5198811477s; animation-delay: -0.5198811477s; }
+
+#applicant_modal .modal_icons.editing svg:nth-child(15n+15):not(.add_icon) { -webkit-animation-duration: 0.1255237354s; animation-duration: 0.1255237354s; transform-origin: 1.6561737345rem 1.1164249637rem; -webkit-animation-delay: -0.9507759935s; animation-delay: -0.9507759935s; }
+
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+16) { -webkit-animation-duration: 0.1255237354s; animation-duration: 0.1255237354s; transform-origin: calc(11px - 1.8rem + 1.6561737345rem) calc(7px + 1.1164249637rem); -webkit-animation-delay: -0.9507759935s; animation-delay: -0.9507759935s; }
+
+#applicant_modal .modal_unused_icons { position: relative; overflow: visible; transition: opacity .15s ease-in-out; }
+
+#applicant_modal .modal_unused_icons.hidden { opacity: 0; pointer-events: none; }
+
+#applicant_modal .modal_unused_icons > div { position: absolute; width: 20em; max-width: 100%; box-sizing: border-box; padding: .4em; left: max(0px, calc(50% - 10em)); margin-top: .5em; border-radius: .5em; box-shadow: 0 0.2rem 0.25rem 0rem rgba(0, 0, 0, 0.4); background-color: white; white-space: nowrap; overflow-x: auto; min-height: 2.2em; }
+
+#applicant_modal .modal_unused_icons > div svg { display: inline-block; transition: transform .15s ease-in-out; cursor: pointer; }
+
+#applicant_modal .modal_unused_icons > div svg:hover { transform: scale(1.2); }
+
+#applicant_modal .modal_unused_icons svg { color: #37474F; height: 1.4em; display: block; fill: currentColor; border-radius: .25em; padding: .2em; border: 1px solid #6a6a6a; }
+
+#applicant_modal .modal_unused_icons svg:not(:first-of-type) { margin-left: .75em; }
+
+#applicant_modal .modal_unused_icons svg .fill_red { fill: #d10202; }
 
 #applicant_modal #modal_scroller { overflow-y: auto; box-shadow: 0 -1.2em 0.25em -1em rgba(0, 0, 0, 0.4) inset; border-radius: .25em; }
 
