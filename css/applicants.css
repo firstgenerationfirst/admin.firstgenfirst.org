@@ -200,65 +200,65 @@ body { display: flex; flex-direction: column; padding: 1rem; }
 
 #applicant_modal .modal_icons.editing .modal_icon_deleter { -webkit-animation: wobble infinite alternate; animation: wobble infinite alternate; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+1):not(.add_icon) { -webkit-animation-duration: 0.0903782396s; animation-duration: 0.0903782396s; transform-origin: 0.6751185684rem 1.0561139524rem; -webkit-animation-delay: -0.9476148718s; animation-delay: -0.9476148718s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+1):not(.add_icon) { -webkit-animation-duration: 0.10272985s; animation-duration: 0.10272985s; transform-origin: 0.7585650989rem 0.2479654196rem; -webkit-animation-delay: -0.9857965221s; animation-delay: -0.9857965221s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+2) { -webkit-animation-duration: 0.0903782396s; animation-duration: 0.0903782396s; transform-origin: calc(11px - 1.8rem + 0.6751185684rem) calc(7px + 1.0561139524rem); -webkit-animation-delay: -0.9476148718s; animation-delay: -0.9476148718s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+2) { -webkit-animation-duration: 0.10272985s; animation-duration: 0.10272985s; transform-origin: calc(11px - 1.8rem + 0.7585650989rem) calc(7px + 0.2479654196rem); -webkit-animation-delay: -0.9857965221s; animation-delay: -0.9857965221s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+2):not(.add_icon) { -webkit-animation-duration: 0.1201572358s; animation-duration: 0.1201572358s; transform-origin: 0.6365330467rem 0.8797260085rem; -webkit-animation-delay: -0.2917558919s; animation-delay: -0.2917558919s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+2):not(.add_icon) { -webkit-animation-duration: 0.1252602647s; animation-duration: 0.1252602647s; transform-origin: 1.5261255047rem 1.3252435429rem; -webkit-animation-delay: -0.3879592853s; animation-delay: -0.3879592853s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+3) { -webkit-animation-duration: 0.1201572358s; animation-duration: 0.1201572358s; transform-origin: calc(11px - 1.8rem + 0.6365330467rem) calc(7px + 0.8797260085rem); -webkit-animation-delay: -0.2917558919s; animation-delay: -0.2917558919s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+3) { -webkit-animation-duration: 0.1252602647s; animation-duration: 0.1252602647s; transform-origin: calc(11px - 1.8rem + 1.5261255047rem) calc(7px + 1.3252435429rem); -webkit-animation-delay: -0.3879592853s; animation-delay: -0.3879592853s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+3):not(.add_icon) { -webkit-animation-duration: 0.1385023985s; animation-duration: 0.1385023985s; transform-origin: 1.3597867258rem 0.9796011247rem; -webkit-animation-delay: -0.2638222289s; animation-delay: -0.2638222289s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+3):not(.add_icon) { -webkit-animation-duration: 0.1332634778s; animation-duration: 0.1332634778s; transform-origin: 0.8013969587rem 0.3909786347rem; -webkit-animation-delay: -0.493237715s; animation-delay: -0.493237715s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+4) { -webkit-animation-duration: 0.1385023985s; animation-duration: 0.1385023985s; transform-origin: calc(11px - 1.8rem + 1.3597867258rem) calc(7px + 0.9796011247rem); -webkit-animation-delay: -0.2638222289s; animation-delay: -0.2638222289s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+4) { -webkit-animation-duration: 0.1332634778s; animation-duration: 0.1332634778s; transform-origin: calc(11px - 1.8rem + 0.8013969587rem) calc(7px + 0.3909786347rem); -webkit-animation-delay: -0.493237715s; animation-delay: -0.493237715s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+4):not(.add_icon) { -webkit-animation-duration: 0.1163212863s; animation-duration: 0.1163212863s; transform-origin: 0.493955942rem 1.3784576187rem; -webkit-animation-delay: -0.3132185905s; animation-delay: -0.3132185905s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+4):not(.add_icon) { -webkit-animation-duration: 0.144323252s; animation-duration: 0.144323252s; transform-origin: 0.3783243797rem 1.1484094244rem; -webkit-animation-delay: -0.960363997s; animation-delay: -0.960363997s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+5) { -webkit-animation-duration: 0.1163212863s; animation-duration: 0.1163212863s; transform-origin: calc(11px - 1.8rem + 0.493955942rem) calc(7px + 1.3784576187rem); -webkit-animation-delay: -0.3132185905s; animation-delay: -0.3132185905s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+5) { -webkit-animation-duration: 0.144323252s; animation-duration: 0.144323252s; transform-origin: calc(11px - 1.8rem + 0.3783243797rem) calc(7px + 1.1484094244rem); -webkit-animation-delay: -0.960363997s; animation-delay: -0.960363997s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+5):not(.add_icon) { -webkit-animation-duration: 0.10446157s; animation-duration: 0.10446157s; transform-origin: 1.4463691203rem 1.1931459981rem; -webkit-animation-delay: -0.5530048125s; animation-delay: -0.5530048125s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+5):not(.add_icon) { -webkit-animation-duration: 0.1594823638s; animation-duration: 0.1594823638s; transform-origin: 0.469138279rem 0.5707603047rem; -webkit-animation-delay: -0.9264113943s; animation-delay: -0.9264113943s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+6) { -webkit-animation-duration: 0.10446157s; animation-duration: 0.10446157s; transform-origin: calc(11px - 1.8rem + 1.4463691203rem) calc(7px + 1.1931459981rem); -webkit-animation-delay: -0.5530048125s; animation-delay: -0.5530048125s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+6) { -webkit-animation-duration: 0.1594823638s; animation-duration: 0.1594823638s; transform-origin: calc(11px - 1.8rem + 0.469138279rem) calc(7px + 0.5707603047rem); -webkit-animation-delay: -0.9264113943s; animation-delay: -0.9264113943s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+6):not(.add_icon) { -webkit-animation-duration: 0.1180475353s; animation-duration: 0.1180475353s; transform-origin: 1.6131210157rem 0.7494217591rem; -webkit-animation-delay: -0.2367317166s; animation-delay: -0.2367317166s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+6):not(.add_icon) { -webkit-animation-duration: 0.1482875399s; animation-duration: 0.1482875399s; transform-origin: 1.1895491247rem 1.5347699293rem; -webkit-animation-delay: -0.2537758795s; animation-delay: -0.2537758795s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+7) { -webkit-animation-duration: 0.1180475353s; animation-duration: 0.1180475353s; transform-origin: calc(11px - 1.8rem + 1.6131210157rem) calc(7px + 0.7494217591rem); -webkit-animation-delay: -0.2367317166s; animation-delay: -0.2367317166s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+7) { -webkit-animation-duration: 0.1482875399s; animation-duration: 0.1482875399s; transform-origin: calc(11px - 1.8rem + 1.1895491247rem) calc(7px + 1.5347699293rem); -webkit-animation-delay: -0.2537758795s; animation-delay: -0.2537758795s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+7):not(.add_icon) { -webkit-animation-duration: 0.1418126727s; animation-duration: 0.1418126727s; transform-origin: 0.1360969413rem 1.1064297368rem; -webkit-animation-delay: -0.0799545869s; animation-delay: -0.0799545869s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+7):not(.add_icon) { -webkit-animation-duration: 0.148176224s; animation-duration: 0.148176224s; transform-origin: 0.5628384367rem 1.1951755773rem; -webkit-animation-delay: -0.2548860463s; animation-delay: -0.2548860463s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+8) { -webkit-animation-duration: 0.1418126727s; animation-duration: 0.1418126727s; transform-origin: calc(11px - 1.8rem + 0.1360969413rem) calc(7px + 1.1064297368rem); -webkit-animation-delay: -0.0799545869s; animation-delay: -0.0799545869s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+8) { -webkit-animation-duration: 0.148176224s; animation-duration: 0.148176224s; transform-origin: calc(11px - 1.8rem + 0.5628384367rem) calc(7px + 1.1951755773rem); -webkit-animation-delay: -0.2548860463s; animation-delay: -0.2548860463s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+8):not(.add_icon) { -webkit-animation-duration: 0.1488231918s; animation-duration: 0.1488231918s; transform-origin: 0.9767374712rem 0.5654861076rem; -webkit-animation-delay: -0.5733724157s; animation-delay: -0.5733724157s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+8):not(.add_icon) { -webkit-animation-duration: 0.1464679319s; animation-duration: 0.1464679319s; transform-origin: 1.590846086rem 0.0591157023rem; -webkit-animation-delay: -0.4748319806s; animation-delay: -0.4748319806s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+9) { -webkit-animation-duration: 0.1488231918s; animation-duration: 0.1488231918s; transform-origin: calc(11px - 1.8rem + 0.9767374712rem) calc(7px + 0.5654861076rem); -webkit-animation-delay: -0.5733724157s; animation-delay: -0.5733724157s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+9) { -webkit-animation-duration: 0.1464679319s; animation-duration: 0.1464679319s; transform-origin: calc(11px - 1.8rem + 1.590846086rem) calc(7px + 0.0591157023rem); -webkit-animation-delay: -0.4748319806s; animation-delay: -0.4748319806s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+9):not(.add_icon) { -webkit-animation-duration: 0.1590954612s; animation-duration: 0.1590954612s; transform-origin: 0.3614125228rem 1.686493954rem; -webkit-animation-delay: -0.4829004973s; animation-delay: -0.4829004973s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+9):not(.add_icon) { -webkit-animation-duration: 0.1303752332s; animation-duration: 0.1303752332s; transform-origin: 0.6925683644rem 1.5754139273rem; -webkit-animation-delay: -0.0979394693s; animation-delay: -0.0979394693s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+10) { -webkit-animation-duration: 0.1590954612s; animation-duration: 0.1590954612s; transform-origin: calc(11px - 1.8rem + 0.3614125228rem) calc(7px + 1.686493954rem); -webkit-animation-delay: -0.4829004973s; animation-delay: -0.4829004973s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+10) { -webkit-animation-duration: 0.1303752332s; animation-duration: 0.1303752332s; transform-origin: calc(11px - 1.8rem + 0.6925683644rem) calc(7px + 1.5754139273rem); -webkit-animation-delay: -0.0979394693s; animation-delay: -0.0979394693s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+10):not(.add_icon) { -webkit-animation-duration: 0.1465009392s; animation-duration: 0.1465009392s; transform-origin: 1.2116003637rem 0.7488874199rem; -webkit-animation-delay: -0.2796566442s; animation-delay: -0.2796566442s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+10):not(.add_icon) { -webkit-animation-duration: 0.12637996s; animation-duration: 0.12637996s; transform-origin: 1.1307985195rem 0.2434499168rem; -webkit-animation-delay: -0.2920744554s; animation-delay: -0.2920744554s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+11) { -webkit-animation-duration: 0.1465009392s; animation-duration: 0.1465009392s; transform-origin: calc(11px - 1.8rem + 1.2116003637rem) calc(7px + 0.7488874199rem); -webkit-animation-delay: -0.2796566442s; animation-delay: -0.2796566442s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+11) { -webkit-animation-duration: 0.12637996s; animation-duration: 0.12637996s; transform-origin: calc(11px - 1.8rem + 1.1307985195rem) calc(7px + 0.2434499168rem); -webkit-animation-delay: -0.2920744554s; animation-delay: -0.2920744554s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+11):not(.add_icon) { -webkit-animation-duration: 0.1431903053s; animation-duration: 0.1431903053s; transform-origin: 1.5837360994rem 0.7867591921rem; -webkit-animation-delay: -0.5786734511s; animation-delay: -0.5786734511s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+11):not(.add_icon) { -webkit-animation-duration: 0.0949217974s; animation-duration: 0.0949217974s; transform-origin: 1.2377576416rem 0.4413044741rem; -webkit-animation-delay: -0.7981903822s; animation-delay: -0.7981903822s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+12) { -webkit-animation-duration: 0.1431903053s; animation-duration: 0.1431903053s; transform-origin: calc(11px - 1.8rem + 1.5837360994rem) calc(7px + 0.7867591921rem); -webkit-animation-delay: -0.5786734511s; animation-delay: -0.5786734511s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+12) { -webkit-animation-duration: 0.0949217974s; animation-duration: 0.0949217974s; transform-origin: calc(11px - 1.8rem + 1.2377576416rem) calc(7px + 0.4413044741rem); -webkit-animation-delay: -0.7981903822s; animation-delay: -0.7981903822s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+12):not(.add_icon) { -webkit-animation-duration: 0.1374632649s; animation-duration: 0.1374632649s; transform-origin: 0.8557845374rem 0.8947554059rem; -webkit-animation-delay: -0.3925562454s; animation-delay: -0.3925562454s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+12):not(.add_icon) { -webkit-animation-duration: 0.1400704934s; animation-duration: 0.1400704934s; transform-origin: 0.1747002718rem 1.3532322676rem; -webkit-animation-delay: -0.6696160287s; animation-delay: -0.6696160287s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+13) { -webkit-animation-duration: 0.1374632649s; animation-duration: 0.1374632649s; transform-origin: calc(11px - 1.8rem + 0.8557845374rem) calc(7px + 0.8947554059rem); -webkit-animation-delay: -0.3925562454s; animation-delay: -0.3925562454s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+13) { -webkit-animation-duration: 0.1400704934s; animation-duration: 0.1400704934s; transform-origin: calc(11px - 1.8rem + 0.1747002718rem) calc(7px + 1.3532322676rem); -webkit-animation-delay: -0.6696160287s; animation-delay: -0.6696160287s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+13):not(.add_icon) { -webkit-animation-duration: 0.1375373793s; animation-duration: 0.1375373793s; transform-origin: 1.2782658357rem 0.3355254847rem; -webkit-animation-delay: -0.484961837s; animation-delay: -0.484961837s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+13):not(.add_icon) { -webkit-animation-duration: 0.1546462545s; animation-duration: 0.1546462545s; transform-origin: 0.179460134rem 0.1132481779rem; -webkit-animation-delay: -0.3386214772s; animation-delay: -0.3386214772s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+14) { -webkit-animation-duration: 0.1375373793s; animation-duration: 0.1375373793s; transform-origin: calc(11px - 1.8rem + 1.2782658357rem) calc(7px + 0.3355254847rem); -webkit-animation-delay: -0.484961837s; animation-delay: -0.484961837s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+14) { -webkit-animation-duration: 0.1546462545s; animation-duration: 0.1546462545s; transform-origin: calc(11px - 1.8rem + 0.179460134rem) calc(7px + 0.1132481779rem); -webkit-animation-delay: -0.3386214772s; animation-delay: -0.3386214772s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+14):not(.add_icon) { -webkit-animation-duration: 0.1267488224s; animation-duration: 0.1267488224s; transform-origin: 0.1183320167rem 1.7244662981rem; -webkit-animation-delay: -0.5198811477s; animation-delay: -0.5198811477s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+14):not(.add_icon) { -webkit-animation-duration: 0.1032755917s; animation-duration: 0.1032755917s; transform-origin: 1.0770984469rem 1.0398237162rem; -webkit-animation-delay: -0.3298424502s; animation-delay: -0.3298424502s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+15) { -webkit-animation-duration: 0.1267488224s; animation-duration: 0.1267488224s; transform-origin: calc(11px - 1.8rem + 0.1183320167rem) calc(7px + 1.7244662981rem); -webkit-animation-delay: -0.5198811477s; animation-delay: -0.5198811477s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+15) { -webkit-animation-duration: 0.1032755917s; animation-duration: 0.1032755917s; transform-origin: calc(11px - 1.8rem + 1.0770984469rem) calc(7px + 1.0398237162rem); -webkit-animation-delay: -0.3298424502s; animation-delay: -0.3298424502s; }
 
-#applicant_modal .modal_icons.editing svg:nth-child(15n+15):not(.add_icon) { -webkit-animation-duration: 0.1255237354s; animation-duration: 0.1255237354s; transform-origin: 1.6561737345rem 1.1164249637rem; -webkit-animation-delay: -0.9507759935s; animation-delay: -0.9507759935s; }
+#applicant_modal .modal_icons.editing svg:nth-child(15n+15):not(.add_icon) { -webkit-animation-duration: 0.1357311146s; animation-duration: 0.1357311146s; transform-origin: 1.2652359575rem 0.5600703844rem; -webkit-animation-delay: -0.320103504s; animation-delay: -0.320103504s; }
 
-#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+16) { -webkit-animation-duration: 0.1255237354s; animation-duration: 0.1255237354s; transform-origin: calc(11px - 1.8rem + 1.6561737345rem) calc(7px + 1.1164249637rem); -webkit-animation-delay: -0.9507759935s; animation-delay: -0.9507759935s; }
+#applicant_modal .modal_icons.editing .modal_icon_deleter:nth-child(15n+16) { -webkit-animation-duration: 0.1357311146s; animation-duration: 0.1357311146s; transform-origin: calc(11px - 1.8rem + 1.2652359575rem) calc(7px + 0.5600703844rem); -webkit-animation-delay: -0.320103504s; animation-delay: -0.320103504s; }
 
 #applicant_modal .modal_unused_icons { position: relative; overflow: visible; transition: opacity .15s ease-in-out; }
 
