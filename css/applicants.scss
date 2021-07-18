@@ -320,7 +320,7 @@ body {
         .applicant_match + .applicant_icons {
             display: flex;
 
-            .applicant_icon {
+            svg {
                 height: 1.4em;
                 display: block;
                 fill: currentColor;
@@ -477,6 +477,8 @@ body {
                 padding-top: 0;
                 padding-bottom: 0;
                 margin-bottom: -3px;
+                max-width: 100%;
+                box-sizing: border-box;
             }
         }
 
@@ -504,12 +506,13 @@ body {
             font-family: $Rubik;
             font-weight: 400;
             font-size: 1.2rem;
-            margin: 1.5rem 0 0;
-            padding: .2em 0 calc(.2em + 3px);
+            margin: 1rem 0 0;
+            padding: .2em 0;
 
             select {
                 margin-top: -.2em;
-                margin-bottom: calc(-.2em - 3px);
+                margin-bottom: -2em;
+                padding-bottom: calc(.2em - 3px);
                 padding-left: 1.4em;
             }
         }
@@ -532,6 +535,172 @@ body {
         select,
         textarea {
             background-color: transparent;
+        }
+    }
+
+    .modal_icons {
+        display: inline-block;
+        justify-content: center;
+        overflow: visible;
+        width: 20em;
+        max-width: 100%;
+        margin: css-max(calc(7px + .2em), .5em) 0 0;
+        border-radius: .5em;
+        line-height: 0;
+
+        &.hidden {
+            display: none;
+        }
+
+        svg {
+            color: $text-color;
+            height: 1.4em;
+            display: inline-block;
+            fill: currentColor;
+            border-radius: .25em;
+            padding: .2em;
+            margin: 0 .375rem;
+            
+            .fill_red {
+                fill: change-color($theme-color, $hue: 0deg);
+            }
+        }
+
+        .modal_icon_deleter {
+            margin: -7px calc(-7px + .375rem) 0 calc(-11px - .375rem);
+            cursor: pointer;
+            border-radius: 50%;
+            box-sizing: content-box;
+            padding: 0;
+            vertical-align: top;
+            position: relative;
+            border: none;
+            background-color: transparent;
+
+            div {
+                background-color: change-color($theme-color, $hue: 0deg);
+                background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-5 -5 10 10' stroke-width='1.25' stroke='white'><line x1='-2.5' y1='-2.5' x2='2.5' y2='2.5'/><line x1='2.5' y1='-2.5' x2='-2.5' y2='2.5'/></svg>");
+                height: 12px;
+                width: 12px;
+                border-radius: 50%;
+                border: 3px solid transparent;
+                background-clip: content-box;
+                transition: transform .15s ease-in-out;
+            }
+        }
+
+        svg:hover + .modal_icon_deleter div,
+        .modal_icon_deleter:hover div {
+            transform: scale(1.33333);
+        }
+
+        .add_icon {
+            cursor: pointer;
+        }
+
+        // Icons "wobble" (like how they do on iOS) when they are in edit mode to show that they can
+        // be deleted. Basic idea taken from (with slight modifications):
+        // https://www.kirupa.com/html5/creating_the_ios_icon_jiggle_wobble_effect_in_css.htm
+        @at-root {
+            @keyframes wobble {
+                0% {
+                    transform: rotate(2deg);
+                    animation-timing-function: ease-in;
+                }
+
+                100% {
+                    transform: rotate(-2deg);
+                    animation-timing-function: ease-out;
+                }
+            }
+        }
+
+        &.editing svg {
+            animation: wobble infinite alternate;
+            box-shadow: 0 0 0 1px change-color($theme-color, $saturation: 0);
+            cursor: pointer;
+        }
+
+        &.editing .modal_icon_deleter {
+            animation: wobble infinite alternate;
+        }
+
+        // Add "randomness" for 15 icons and then it repeats after that.
+        @for $i from 1 through 15 {
+            $duration: #{random() * .07 + .09 * 1s};
+            $origin-x: #{random() * 1.8rem};
+            $origin-y: #{random() * 1.8rem};
+            $delay: #{random() * -1s};
+
+            &.editing svg:nth-child(15n+#{$i}):not(.add_icon) {
+                animation-duration: $duration;
+                transform-origin: $origin-x $origin-y;
+                animation-delay: $delay;
+            }
+
+            &.editing .modal_icon_deleter:nth-child(15n+#{$i + 1}) {
+                animation-duration: $duration;
+                // Set the transform-origin to the same position as the icon so that it moves along
+                // with it.
+                transform-origin: calc(11px - 1.8rem + #{$origin-x}) calc(7px + #{$origin-y});
+                animation-delay: $delay;
+            }
+        }
+    }
+
+    .modal_unused_icons {
+        position: relative;
+        overflow: visible;
+        transition: opacity .15s ease-in-out;
+
+        &.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        > div {
+            $width: 20em;
+            position: absolute;
+            width: $width;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: .4em;
+            left: css-max(0px, calc(50% - #{$width / 2}));
+            margin-top: .5em;
+            border-radius: .5em;
+            box-shadow: $shadow;
+            background-color: white;
+            white-space: nowrap;
+            overflow-x: auto;
+            min-height: 1.4em + .4em * 2;
+
+            svg {
+                display: inline-block;
+                transition: transform .15s ease-in-out;
+                cursor: pointer;
+
+                &:hover {
+                    transform: scale(1.2);
+                }
+            }
+        }
+
+        svg {
+            color: $text-color;
+            height: 1.4em;
+            display: block;
+            fill: currentColor;
+            border-radius: .25em;
+            padding: .2em;
+            border: 1px solid change-color($theme-color, $saturation: 0deg);
+    
+            &:not(:first-of-type) {
+                margin-left: .75em;
+            }
+            
+            .fill_red {
+                fill: change-color($theme-color, $hue: 0deg);
+            }
         }
     }
 

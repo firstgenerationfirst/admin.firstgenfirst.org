@@ -6,7 +6,17 @@ const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
 
 exports.jekyll = function jekyll() {
-  const jekyll = child.spawn("bundle", ["exec", "jekyll", "serve", "--incremental"]);
+  let opts = {
+    cwd: undefined,
+    env: process.env
+  };
+  if (process.argv.includes("--production")) {
+    opts.env.JEKYLL_ENV = "production";
+  } else {
+    opts.env.JEKYLL_ENV = "development";
+  }
+
+  const jekyll = child.spawn("bundle", ["exec", "jekyll", "serve", "--incremental"], opts);
 
   const jekyllLogger = (buffer) => {
     buffer.toString()
@@ -33,6 +43,8 @@ exports.minifyscripts = function minifyscripts() {
 exports.watch = function watch() {
   gulp.watch("./scripts/**/*.js", exports.minifyscripts);
 }
+
+exports.build = exports.minifyscripts;
 
 exports.default = gulp.parallel(
   exports.jekyll,

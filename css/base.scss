@@ -50,7 +50,7 @@ p {
 	}
 }
 
-button:not(.link), a.button {
+button:not(.link):not(.nostyle), a.button {
 	padding: .4em 1em;
 	margin: 0;
 	font-family: $Oswald;
