@@ -205,7 +205,7 @@
 			sheet: "Form Responses 1",
 			mapping: {
 				Email: "Email Address",
-				First: "First Name",
+				First: "First/Preferred Name",
 				Last: "Last Name",
 				Pronouns: "Pronouns",
 				Birthday: "Birthdate ",
