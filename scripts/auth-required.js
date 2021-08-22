@@ -37,7 +37,7 @@
                         if (gapi.auth2.getAuthInstance()) {
                             resolve();
                         } else {
-                            reject();
+                            reject("Timeout");
                         }
                     }, 8000);
                     gapi.client.init({
@@ -47,15 +47,15 @@
                         scope: "profile https://www.googleapis.com/auth/spreadsheets"
                     }).then(function() {
                         clearTimeout(timeout);
-                        resolve()
-                    }, function() {
+                        resolve();
+                    }, function(e) {
                         clearTimeout(timeout);
-                        reject()
+                        reject(e);
                     });
                 },
                 onerror: reject,
                 timeout: 5000,
-                ontimeout: reject
+                ontimeout: _ => reject("Timeout")
             });
         }
     

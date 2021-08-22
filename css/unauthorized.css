@@ -4,4 +4,4 @@ p { text-align: center; max-width: calc(100% - 2rem); width: 60em; margin: 0 aut
 
 #signin-btn { display: block; margin: 0 auto; }
 
-#attempts { color: red; font-weight: 400; display: none; padding: 1em 0 0; }
+#attempts { color: red; font-weight: 450; display: none; padding: 1em 0 0; }
