@@ -6,3 +6,8 @@ body {
 	@include centering-flex;
     align-items: center;
 }
+
+p {
+    text-align: center;
+    padding: 0 1em;
+}

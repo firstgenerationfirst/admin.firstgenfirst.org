@@ -6,7 +6,7 @@
 	<title>{{ page.title }} &ndash; {{ site.title }}</title>
 	<meta name="robots" content="noindex,nofollow">
 	<link rel="preconnect" href="https://fonts.gstatic.com"> 
-	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@450;550&family=Rubik:ital,wght@0,300;0,450;1,300&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@450;550&family=Rubik:ital,wght@0,300;0,450;1,300;1,450&display=swap" rel="stylesheet">
 	{%- if auth != false -%}
 	<meta name="google-signin-client_id" content="544519717939-mljfuqt4cd6it8on67gmptrnv964171e.apps.googleusercontent.com">
 	{%- endif -%}
@@ -26,14 +26,6 @@
 	<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-firestore.js"></script>
 	<script src="https://apis.google.com/js/platform.js" async defer id="gapi-script"></script>
 	{%- endif -%}
-	{%- if auth == 1 -%}
-	<script src="/scripts/auth-optional.js"></script>
-	{%- elsif auth == 2 -%}
-	<script src="/scripts/auth-required.js"></script>
-	{%- endif -%}
-	{%- if auth != 0 -%}
-	<script src="/scripts/auth-roles.js" async></script>
-	{%- endif -%}
 	{%- if jekyll.environment == "production" -%}
 		{%- assign scriptspath = "/minscripts/" -%}
 		{%- assign usebabel = false -%}
@@ -41,6 +33,14 @@
 		{%- assign scriptspath = "/scripts/" -%}
 		<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 		{%- assign usebabel = true -%}
+	{%- endif -%}
+	{%- if auth == 1 -%}
+	<script src="{{- scriptspath -}}auth-optional.js"></script>
+	{%- elsif auth == 2 -%}
+	<script src="{{- scriptspath -}}auth-required.js"></script>
+	{%- endif -%}
+	{%- if auth != 0 -%}
+	<script src="{{- scriptspath -}}auth-roles.js" async></script>
 	{%- endif -%}
     {%- include getscripts path=scriptspath afterbody=false usebabel=usebabel -%}
 </head>

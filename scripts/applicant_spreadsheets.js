@@ -1,71 +1,106 @@
 !function() {
 	"use strict";
-	const MISSING_FIELD = Symbol("MISSING_FIELD");
+
+	const A_CHARCODE = "A".charCodeAt(0);
+	function hash(string) {
+		// Hashes a case-insensitive string, first converting all non-letter characters to the same
+		// thing (e.g., "this is a test" and "ThIs.IS%a~tESt" return the same hash). The hash is in
+		// the range [0, 10^9+7).
+		return string
+			.toUpperCase()
+			.replace(/[^a-z]+/g, "{")
+			.split("")
+			.reduce(
+				(acc, char, i) => (acc + 27 ** (string.length - (i + 1)) * (char.charCodeAt(0) - A_CHARCODE)) % (10**9+7),
+				0
+			);
+	}
+
+	function enumValue(label) {
+		return {
+			label: label,
+			toString: _ => label,
+			valueOf: hash.bind(this, label)
+		};
+	}
+
+	function makeWriteIn(label) {
+		let writeIn = enumValue("WRITE_IN");
+		writeIn.value = label;
+		return writeIn
+	}
+
+	const MISSING_FIELD = enumValue("MISSING_FIELD");
 	const Enum = {
-		NA: Symbol("N/A"),
+		NA: enumValue("N/A"),
+		WRITE_IN: makeWriteIn(null),
 		STATUS: {
-			APPLICANT: Symbol("STATUS.APPLICANT"),
-			FINALIST: Symbol("STATUS.FINALIST"),
-			RECIPIENT: Symbol("STATUS.RECIPIENT"),
-			INELIGIBLE: Symbol("STATUS.INELIGIBLE"),
+			APPLICANT: enumValue("STATUS.APPLICANT"),
+			FINALIST: enumValue("STATUS.FINALIST"),
+			RECIPIENT: enumValue("STATUS.RECIPIENT"),
+			INELIGIBLE: enumValue("STATUS.INELIGIBLE"),
 		},
 		YEAR: {
-			HIGH_SCHOOL: Symbol("YEAR.HIGH_SCHOOL"),
-			FIRST_YEAR: Symbol("YEAR.FIRST_YEAR"),
-			COLLEGE: Symbol("YEAR.COLLEGE"),
-			GRADUATE: Symbol("YEAR.GRADUATE"),
-			TRANSFER: Symbol("YEAR.TRANSFER")
+			HIGH_SCHOOL: enumValue("YEAR.HIGH_SCHOOL"),
+			FIRST_YEAR: enumValue("YEAR.FIRST_YEAR"),
+			COLLEGE: enumValue("YEAR.COLLEGE"),
+			GRADUATE: enumValue("YEAR.GRADUATE"),
+			TRANSFER: enumValue("YEAR.TRANSFER")
+		},
+		EFC: {
+			UNDOCUMENTED: enumValue("EFC.UNDOCUMENTED")
 		},
 		LOANS: {
-			NO: Symbol("LOANS.NO"),
-			YES: Symbol("LOANS.YES"),
-			UNCERTAIN: Symbol("LOANS.UNCERTAIN")
+			NO: enumValue("LOANS.NO"),
+			YES: enumValue("LOANS.YES"),
+			UNCERTAIN: enumValue("LOANS.UNCERTAIN")
 		},
 		CAMPUS_LIVING: {
-			ON_CAMPUS: Symbol("CAMPUS_LIVING.ON_CAMPUS"),
-			OFF_CAMPUS_RENT: Symbol("CAMPUS_LIVING.OFF_CAMPUS_RENT"),
-			OFF_CAMPUS_NO_RENT: Symbol("CAMPUS_LIVING.OFF_CAMPUS_NO_RENT"),
-			UNCERTAIN: Symbol("CAMPUS_LIVING.UNCERTAIN")
+			ON_CAMPUS: enumValue("CAMPUS_LIVING.ON_CAMPUS"),
+			OFF_CAMPUS_RENT: enumValue("CAMPUS_LIVING.OFF_CAMPUS_RENT"),
+			OFF_CAMPUS_NO_RENT: enumValue("CAMPUS_LIVING.OFF_CAMPUS_NO_RENT"),
+			UNCERTAIN: enumValue("CAMPUS_LIVING.UNCERTAIN")
 		},
 		PARENT1_EDUCATION: {
-			NO_DIPLOMA: Symbol("PARENT1_EDUCATION.NO_DIPLOMA"),
-			DIPLOMA: Symbol("PARENT1_EDUCATION.DIPLOMA"),
-			SOME_COLLEGE: Symbol("PARENT1_EDUCATION.SOME_COLLEGE"),
-			DEGREE: Symbol("PARENT1_EDUCATION.DEGREE"),
-			MULTIPLE_DEGREES: Symbol("PARENT1_EDUCATION.MULTIPLE_DEGREES"),
-			NO_PARENT: Symbol("PARENT1_EDUCATION.NO_PARENT")
+			NO_DIPLOMA: enumValue("PARENT1_EDUCATION.NO_DIPLOMA"),
+			DIPLOMA: enumValue("PARENT1_EDUCATION.DIPLOMA"),
+			SOME_COLLEGE: enumValue("PARENT1_EDUCATION.SOME_COLLEGE"),
+			DEGREE: enumValue("PARENT1_EDUCATION.DEGREE"),
+			MULTIPLE_DEGREES: enumValue("PARENT1_EDUCATION.MULTIPLE_DEGREES"),
+			NO_PARENT: enumValue("PARENT1_EDUCATION.NO_PARENT")
 		},
 		PARENT2_EDUCATION: {
-			NO_DIPLOMA: Symbol("PARENT2_EDUCATION.NO_DIPLOMA"),
-			DIPLOMA: Symbol("PARENT2_EDUCATION.DIPLOMA"),
-			SOME_COLLEGE: Symbol("PARENT2_EDUCATION.SOME_COLLEGE"),
-			DEGREE: Symbol("PARENT2_EDUCATION.DEGREE"),
-			MULTIPLE_DEGREES: Symbol("PARENT2_EDUCATION.MULTIPLE_DEGREES"),
-			NO_PARENT: Symbol("PARENT2_EDUCATION.NO_PARENT")
+			NO_DIPLOMA: enumValue("PARENT2_EDUCATION.NO_DIPLOMA"),
+			DIPLOMA: enumValue("PARENT2_EDUCATION.DIPLOMA"),
+			SOME_COLLEGE: enumValue("PARENT2_EDUCATION.SOME_COLLEGE"),
+			DEGREE: enumValue("PARENT2_EDUCATION.DEGREE"),
+			MULTIPLE_DEGREES: enumValue("PARENT2_EDUCATION.MULTIPLE_DEGREES"),
+			NO_PARENT: enumValue("PARENT2_EDUCATION.NO_PARENT")
 		}
 	}
 
 	const ICONS = {
 		"!FG": (
 			<svg key="!FG" data-icon-name="!FG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-			  <title>Not a first-generation student</title>
-			  <path d="M8.33936,76.26074A1.82385,1.82385,0,0,1,6.5083,74.42969V24.75732a1.85851,1.85851,0,0,1,.53418-1.37353,1.7659,1.7659,0,0,1,1.29688-.53418H41.4541a1.82974,1.82974,0,0,1,1.90772,1.90771v5.34082a1.73427,1.73427,0,0,1-.53418,1.33545,1.93532,1.93532,0,0,1-1.37354.4961H16.96143V46.42676H39.92822a1.82974,1.82974,0,0,1,1.90772,1.90771v5.34131a1.76668,1.76668,0,0,1-.53418,1.29688,1.85932,1.85932,0,0,1-1.37354.53418H16.96143V74.42969a1.7667,1.7667,0,0,1-.53418,1.29687,1.85851,1.85851,0,0,1-1.37354.53418Z"/>
-			  <path d="M72.73926,77.02344A26.63592,26.63592,0,0,1,60.79785,74.582,17.80738,17.80738,0,0,1,53.167,67.52441,23.08256,23.08256,0,0,1,50.23,56.499q-.0769-3.27978-.07666-7.0581,0-3.7771.07666-7.13428a22.24425,22.24425,0,0,1,2.937-10.835,17.94968,17.94968,0,0,1,7.707-6.94336,26.77358,26.77358,0,0,1,11.86524-2.44189,29.218,29.218,0,0,1,9.7666,1.48779,22.53507,22.53507,0,0,1,6.98144,3.81543,16.89339,16.89339,0,0,1,4.19629,4.99756,11.57777,11.57777,0,0,1,1.48829,4.95947A1.33322,1.33322,0,0,1,94.79,38.49121a1.65,1.65,0,0,1-1.2207.458H85.71a1.80313,1.80313,0,0,1-1.14453-.30518,2.65331,2.65331,0,0,1-.68652-.91552A11.33568,11.33568,0,0,0,81.97168,34.562a10.29932,10.29932,0,0,0-3.51074-2.63232,13.20883,13.20883,0,0,0-5.72168-1.06836A12.00557,12.00557,0,0,0,64.46,33.60791q-3.08935,2.74731-3.31934,9.08008-.22851,6.63794,0,13.4292.23,6.48633,3.39551,9.30859A12.08116,12.08116,0,0,0,72.8916,68.249a14.78187,14.78187,0,0,0,6.1416-1.2207,9.40112,9.40112,0,0,0,4.27344-3.81543,12.69961,12.69961,0,0,0,1.56445-6.63769V54.21H75.56152a1.76287,1.76287,0,0,1-1.29687-.53418,1.85656,1.85656,0,0,1-.53418-1.374v-4.044a1.85811,1.85811,0,0,1,.53418-1.373,1.76666,1.76666,0,0,1,1.29687-.53418H93.79785a1.73969,1.73969,0,0,1,1.33594.53418,1.94074,1.94074,0,0,1,.49512,1.373v8.01172A21.15466,21.15466,0,0,1,92.84473,67.333a18.4408,18.4408,0,0,1-7.93555,7.17285A27.43188,27.43188,0,0,1,72.73926,77.02344Z"/>
-			  <path className="fill_red" d="M3.0952,28.75317A1.76126,1.76126,0,0,1,4.041,27.71709a1.76176,1.76176,0,0,1,1.4011-.0587L98.28356,61.45a1.82449,1.82449,0,0,1,1.09459,2.34737l-2.4533,6.74038a1.73993,1.73993,0,0,1-.95869,1.07159,1.83967,1.83967,0,0,1-1.38813.02151L1.73653,37.83924a1.83651,1.83651,0,0,1-1.049-.90857,1.73618,1.73618,0,0,1-.0456-1.43711Z"/>
+				<title>Not a first-generation student</title>
+				<path d="M8.33936,76.26074A1.82385,1.82385,0,0,1,6.5083,74.42969V24.75732a1.85851,1.85851,0,0,1,.53418-1.37353,1.7659,1.7659,0,0,1,1.29688-.53418H41.4541a1.82974,1.82974,0,0,1,1.90772,1.90771v5.34082a1.73427,1.73427,0,0,1-.53418,1.33545,1.93532,1.93532,0,0,1-1.37354.4961H16.96143V46.42676H39.92822a1.82974,1.82974,0,0,1,1.90772,1.90771v5.34131a1.76668,1.76668,0,0,1-.53418,1.29688,1.85932,1.85932,0,0,1-1.37354.53418H16.96143V74.42969a1.7667,1.7667,0,0,1-.53418,1.29687,1.85851,1.85851,0,0,1-1.37354.53418Z"/>
+				<path d="M72.73926,77.02344A26.63592,26.63592,0,0,1,60.79785,74.582,17.80738,17.80738,0,0,1,53.167,67.52441,23.08256,23.08256,0,0,1,50.23,56.499q-.0769-3.27978-.07666-7.0581,0-3.7771.07666-7.13428a22.24425,22.24425,0,0,1,2.937-10.835,17.94968,17.94968,0,0,1,7.707-6.94336,26.77358,26.77358,0,0,1,11.86524-2.44189,29.218,29.218,0,0,1,9.7666,1.48779,22.53507,22.53507,0,0,1,6.98144,3.81543,16.89339,16.89339,0,0,1,4.19629,4.99756,11.57777,11.57777,0,0,1,1.48829,4.95947A1.33322,1.33322,0,0,1,94.79,38.49121a1.65,1.65,0,0,1-1.2207.458H85.71a1.80313,1.80313,0,0,1-1.14453-.30518,2.65331,2.65331,0,0,1-.68652-.91552A11.33568,11.33568,0,0,0,81.97168,34.562a10.29932,10.29932,0,0,0-3.51074-2.63232,13.20883,13.20883,0,0,0-5.72168-1.06836A12.00557,12.00557,0,0,0,64.46,33.60791q-3.08935,2.74731-3.31934,9.08008-.22851,6.63794,0,13.4292.23,6.48633,3.39551,9.30859A12.08116,12.08116,0,0,0,72.8916,68.249a14.78187,14.78187,0,0,0,6.1416-1.2207,9.40112,9.40112,0,0,0,4.27344-3.81543,12.69961,12.69961,0,0,0,1.56445-6.63769V54.21H75.56152a1.76287,1.76287,0,0,1-1.29687-.53418,1.85656,1.85656,0,0,1-.53418-1.374v-4.044a1.85811,1.85811,0,0,1,.53418-1.373,1.76666,1.76666,0,0,1,1.29687-.53418H93.79785a1.73969,1.73969,0,0,1,1.33594.53418,1.94074,1.94074,0,0,1,.49512,1.373v8.01172A21.15466,21.15466,0,0,1,92.84473,67.333a18.4408,18.4408,0,0,1-7.93555,7.17285A27.43188,27.43188,0,0,1,72.73926,77.02344Z"/>
+				<path className="fill_red" d="M3.0952,28.75317A1.76126,1.76126,0,0,1,4.041,27.71709a1.76176,1.76176,0,0,1,1.4011-.0587L98.28356,61.45a1.82449,1.82449,0,0,1,1.09459,2.34737l-2.4533,6.74038a1.73993,1.73993,0,0,1-.95869,1.07159,1.83967,1.83967,0,0,1-1.38813.02151L1.73653,37.83924a1.83651,1.83651,0,0,1-1.049-.90857,1.73618,1.73618,0,0,1-.0456-1.43711Z"/>
 			</svg>
-		  ),
+		),
 		"!LI": (
-		  <svg key="!LI" data-icon-name="!LI" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-			<title>Not a low-income student</title>
-			<path d="M24.249,76.25977A1.82385,1.82385,0,0,1,22.418,74.42871v-49.749A1.82385,1.82385,0,0,1,24.249,22.84863h7.09619a1.82385,1.82385,0,0,1,1.83106,1.83106v42.5h24.187a1.82836,1.82836,0,0,1,1.9082,1.9082v5.34082a1.77338,1.77338,0,0,1-.5332,1.29688,1.86191,1.86191,0,0,1-1.375.53418Z"/>
-			<path d="M68.50391,76.25977a1.82384,1.82384,0,0,1-1.832-1.83106v-49.749a1.82384,1.82384,0,0,1,1.832-1.83106h7.17187a1.73607,1.73607,0,0,1,1.335.53418,1.83691,1.83691,0,0,1,.4961,1.29688v49.749a1.83359,1.83359,0,0,1-.4961,1.29688,1.73267,1.73267,0,0,1-1.335.53418Z"/>
-			<path className="fill_red" d="M3.0952,28.75317A1.76126,1.76126,0,0,1,4.041,27.71709a1.76176,1.76176,0,0,1,1.4011-.0587L98.28356,61.45a1.82449,1.82449,0,0,1,1.09459,2.34737l-2.4533,6.74038a1.73993,1.73993,0,0,1-.95869,1.07159,1.83967,1.83967,0,0,1-1.38813.02151L1.73653,37.83924a1.83651,1.83651,0,0,1-1.049-.90857,1.73618,1.73618,0,0,1-.0456-1.43711Z"/>
-		  </svg>
+			<svg key="!LI" data-icon-name="!LI" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+				<title>Not a low-income student</title>
+				<path d="M24.249,76.25977A1.82385,1.82385,0,0,1,22.418,74.42871v-49.749A1.82385,1.82385,0,0,1,24.249,22.84863h7.09619a1.82385,1.82385,0,0,1,1.83106,1.83106v42.5h24.187a1.82836,1.82836,0,0,1,1.9082,1.9082v5.34082a1.77338,1.77338,0,0,1-.5332,1.29688,1.86191,1.86191,0,0,1-1.375.53418Z"/>
+				<path d="M68.50391,76.25977a1.82384,1.82384,0,0,1-1.832-1.83106v-49.749a1.82384,1.82384,0,0,1,1.832-1.83106h7.17187a1.73607,1.73607,0,0,1,1.335.53418,1.83691,1.83691,0,0,1,.4961,1.29688v49.749a1.83359,1.83359,0,0,1-.4961,1.29688,1.73267,1.73267,0,0,1-1.335.53418Z"/>
+				<path className="fill_red" d="M3.0952,28.75317A1.76126,1.76126,0,0,1,4.041,27.71709a1.76176,1.76176,0,0,1,1.4011-.0587L98.28356,61.45a1.82449,1.82449,0,0,1,1.09459,2.34737l-2.4533,6.74038a1.73993,1.73993,0,0,1-.95869,1.07159,1.83967,1.83967,0,0,1-1.38813.02151L1.73653,37.83924a1.83651,1.83651,0,0,1-1.049-.90857,1.73618,1.73618,0,0,1-.0456-1.43711Z"/>
+		  	</svg>
 		)
-	  }
+	}
 
 	window.applicant_spreadsheets = {
 		MISSING_FIELD: MISSING_FIELD,
+		makeWriteIn: makeWriteIn,
 		ICONS: ICONS,
 		Enum: Enum,
 		2020: {
@@ -107,7 +142,7 @@
 				Income: "Household Income",
 				// The number of members in the applicant's household, including the applicant – Any positive number or Enum.NA
 				Members: MISSING_FIELD,
-				// The applicant's Expected Family Contribution from their FAFSA SAR – Any nonnegative number or Enum.NA
+				// The applicant's Expected Family Contribution from their FAFSA SAR – Any nonnegative number, Enum.EFC, or Enum.NA
 				EFC: "EFC - This number should be in your SAR for FAFSA or in your financial aid offer from your college",
 				// The applicant's first parent's level of education – One of Enum.PARENT1_EDUCATION or Enum.NA
 				Parent1_Education: "Parent 1 Education",
@@ -251,16 +286,23 @@
 							return Enum.NA;
 						}
 					},
+					College: a => a == "N/A" ? Enum.NA : a,
 					Loans: a => ({"No": Enum.LOANS.NO, "Yes": Enum.LOANS.YES})[a] || Enum.NA,
 					Campus_Living: a => ({"Off-campus, not paying rent": Enum.CAMPUS_LIVING.OFF_CAMPUS_NO_RENT, "Off-campus, paying rent": Enum.CAMPUS_LIVING.OFF_CAMPUS_RENT, "On-Campus": Enum.CAMPUS_LIVING.ON_CAMPUS, "Not sure yet": Enum.CAMPUS_LIVING.UNCERTAIN})[a] || Enum.NA,
-					Year: a => ({"Incoming First Year into college": Enum.YEAR.FIRST_YEAR, "Rising Freshman/Sophomore/Junior/Senior in high school": Enum.YEAR.HIGH_SCHOOL, "Rising Sophomore/Junior/Senior in college": Enum.YEAR.COLLEGE, "Graduate Student": Enum.YEAR.GRADUATE, "Transfer Student": Enum.YEAR.TRANSFER})[a] || Enum.NA,
+					Year: a => ({"Incoming First Year into college": Enum.YEAR.FIRST_YEAR, "Rising Freshman/Sophomore/Junior/Senior in high school": Enum.YEAR.HIGH_SCHOOL, "Rising Sophomore/Junior/Senior in college": Enum.YEAR.COLLEGE, "Graduate Student": Enum.YEAR.GRADUATE, "Transfer": Enum.YEAR.TRANSFER})[a] || Enum.NA,
 					Parent1_Education: a => ({"One college degree": Enum.PARENT1_EDUCATION.DEGREE, "High school diploma or equivalent": Enum.PARENT1_EDUCATION.DIPLOMA, "More than one college degree": Enum.PARENT1_EDUCATION.MULTIPLE_DEGREES, "No high school diploma or equivalent": Enum.PARENT1_EDUCATION.NO_DIPLOMA, "Some college": Enum.PARENT1_EDUCATION.SOME_COLLEGE, "No Parent 1": Enum.PARENT1_EDUCATION.NO_PARENT})[a] || Enum.NA,
 					Parent2_Education: a => ({"One college degree": Enum.PARENT2_EDUCATION.DEGREE, "High school diploma or equivalent": Enum.PARENT2_EDUCATION.DIPLOMA, "More than one college degree": Enum.PARENT2_EDUCATION.MULTIPLE_DEGREES, "No high school diploma or equivalent": Enum.PARENT2_EDUCATION.NO_DIPLOMA, "Some college": Enum.PARENT2_EDUCATION.SOME_COLLEGE, "No Parent 2": Enum.PARENT2_EDUCATION.NO_PARENT})[a] || Enum.NA,
-					Campus_Living: a => ({"On-campus": Enum.CAMPUS_LIVING.ON_CAMPUS, "Off-campus, paying rent": Enum.CAMPUS_LIVING.OFF_CAMPUS_RENT, "Off campus, not paying rent": Enum.CAMPUS_LIVING.OFF_CAMPUS_NO_RENT, "Uncertain": Enum.CAMPUS_LIVING.UNCERTAIN})[a] || Enum.NA,
+					Campus_Living: a => ({"On-campus": Enum.CAMPUS_LIVING.ON_CAMPUS, "Off-campus, paying rent": Enum.CAMPUS_LIVING.OFF_CAMPUS_RENT, "Off-campus, not paying rent": Enum.CAMPUS_LIVING.OFF_CAMPUS_NO_RENT, "Uncertain": Enum.CAMPUS_LIVING.UNCERTAIN})[a] || Enum.NA,
 					Members: stringToNumberOr(Enum.NA),
 					EFC: function (a) {
-						a = +(a.trim().replace(/^\$?0*|\.0*$|\s|,/g, "") || "0");
-						return isNaN(a) ? Enum.NA : a;
+						if (a == "Undocumented") {
+							return Enum.EFC.UNDOCUMENTED;
+						} else if (a == "N/A") {
+							return Enum.NA;
+						} else {
+							let b = +(a.trim().replace(/^\$?0*|\.0*$|\s|,/g, "") || "0");
+							return isNaN(b) ? makeWriteIn(a) : b;
+						}
 					},
 					Birthday: a => new Date(a),
 					Icons: a => a.split("|").map(b => b.trim()).filter(b => b)
@@ -268,15 +310,26 @@
 				to: {
 					Status: a => ({[Enum.STATUS.APPLICANT]: "Applicant", [Enum.STATUS.FINALIST]: "Finalist", [Enum.STATUS.RECIPIENT]: "Recipient", [Enum.STATUS.INELIGIBLE]: "Ineligible"})[a] || "Applicant",
 					Income: a => a ? Array.isArray(a) ? a[1] == Infinity ? `More than $${a[0]}` : `$${a[0]} - $${a[1]}` : `$${a}` : "N/A",
+					College: a => a == Enum.NA ? "N/A" : a,
 					Loans: a => ({[Enum.LOANS.NO]: "No", [Enum.LOANS.YES]: "Yes", [Enum.NA]: "N/A"})[a] || "N/A",
 					Campus_Living: a => ({[Enum.CAMPUS_LIVING.OFF_CAMPUS_RENT]: "Off-campus, paying rent", [Enum.CAMPUS_LIVING.OFF_CAMPUS_NO_RENT]: "Off-campus, not paying rent", [Enum.CAMPUS_LIVING.ON_CAMPUS]: "On-campus", [Enum.CAMPUS_LIVING.UNCERTAIN]: "Not sure yet"})[a] || "N/A",
-					Year: a => ({[Enum.YEAR.FIRST_YEAR]: "Incoming First Year into college", [Enum.YEAR.HIGH_SCHOOL]: "Rising Freshman/Sophomore/Junior/Senior in high school", [Enum.YEAR.COLLEGE]: "Rising Sophomore/Junior/Senior in college", [Enum.YEAR.GRADUATE]: "Graduate Student", [Enum.YEAR.TRANSFER]: "Transfer Student"})[a] || Enum.NA,
+					Year: a => ({[Enum.YEAR.FIRST_YEAR]: "Incoming First Year into college", [Enum.YEAR.HIGH_SCHOOL]: "Rising Freshman/Sophomore/Junior/Senior in high school", [Enum.YEAR.COLLEGE]: "Rising Sophomore/Junior/Senior in college", [Enum.YEAR.GRADUATE]: "Graduate Student", [Enum.YEAR.TRANSFER]: "Transfer"})[a] || Enum.NA,
 					Parent1_Education: a => ({[Enum.PARENT1_EDUCATION.DEGREE]: "One college degree", [Enum.PARENT1_EDUCATION.DIPLOMA]: "High school diploma or equivalent", [Enum.PARENT1_EDUCATION.MULTIPLE_DEGREES]: "More than one college degree", [Enum.PARENT1_EDUCATION.NO_DIPLOMA]: "No high school diploma or equivalent", [Enum.PARENT1_EDUCATION.SOME_COLLEGE]: "Some college", [Enum.PARENT1_EDUCATION.NO_PARENT]: "No Parent 1"})[a] || "N/A",
 					Parent2_Education: a => ({[Enum.PARENT2_EDUCATION.DEGREE]: "One college degree", [Enum.PARENT2_EDUCATION.DIPLOMA]: "High school diploma or equivalent", [Enum.PARENT2_EDUCATION.MULTIPLE_DEGREES]: "More than one college degree", [Enum.PARENT2_EDUCATION.NO_DIPLOMA]: "No high school diploma or equivalent", [Enum.PARENT2_EDUCATION.SOME_COLLEGE]: "Some college", [Enum.PARENT2_EDUCATION.NO_PARENT]: "No Parent 2"})[a] || "N/A",
-					Campus_Living: a => ({[Enum.CAMPUS_LIVING.ON_CAMPUS]: "On-campus", [Enum.CAMPUS_LIVING.OFF_CAMPUS_RENT]: "Off-campus, paying rent", [Enum.CAMPUS_LIVING.OFF_CAMPUS_NO_RENT]: "Off campus, not paying rent", [Enum.CAMPUS_LIVING.UNCERTAIN]: "Uncertain"})[a] || "N/A",
+					Campus_Living: a => ({[Enum.CAMPUS_LIVING.ON_CAMPUS]: "On-campus", [Enum.CAMPUS_LIVING.OFF_CAMPUS_RENT]: "Off-campus, paying rent", [Enum.CAMPUS_LIVING.OFF_CAMPUS_NO_RENT]: "Off-campus, not paying rent", [Enum.CAMPUS_LIVING.UNCERTAIN]: "Uncertain"})[a] || "N/A",
 					Members: numberToStringOr("N/A"),
-					EFC: numberToStringOr("N/A"),
-					birthday: a => a.toUTCString(),
+					EFC: function(a) {
+						if (typeof a == "number") {
+							return numberToStringOr("N/A")(a);
+						} else if (+a == +Enum.EFC.UNDOCUMENTED) {
+							return "Undocumented";
+						} else if (+a == +Enum.WRITE_IN) {
+							return a.value;
+						} else {
+							return "N/A";
+						}
+					},
+					Birthday: a => a.toUTCString(),
 					Icons: a => a.join("|")
 				}
 			},
