@@ -4,11 +4,11 @@
   const MISSING_FIELD = spreadsheetData.MISSING_FIELD;
   const NA = spreadsheetData.Enum.NA;
   // The list of all statuses that an applicant can be.
-  const APPLICANT_STATUSES = ["applicant", "finalist", "recipient", "ineligible"];
+  const APPLICANT_STATUSES = ["applicant", "finalist", "recipient", "ineligible", "2nd read"];
   // Regex that checks if a string is made up entirely of non-alphanumeric characters.
   const ONLY_NON_ALPHANUMERIC_REGEX = /^[^a-zA-Z\d]*$/;
   // Regex that looks for "status:" (for use in parsing search queries).
-  const SEARCH_QUERY_STATUS_REGEX = /(?:\s+|^)status\s*[:=]\s*([a-z]+)(?=\s+|$)/;
+  const SEARCH_QUERY_STATUS_REGEX = /(?:\s+|^)status\s*[:=]\s*([a-z\d]+)(?=\s+|$)/;
   // Regex that looks for "#\d" or "#\d-\d" (for use in parsing search queries).
   const SEARCH_QUERY_ID_REGEX = /(?:\s+|^)(?:#?(\d+)\s*-\s*([a-f\d]*)|#([a-f\d]+)|([a-f\d]*\d[a-f\d]*))(?=\s+|$)/;
   // How many milliseconds we need to hold down a row with the mouse to recognize it as a drag
@@ -102,7 +102,7 @@
     First: convertNA(titleCase),
     Last: convertNA(titleCase),
     Email: convertNA(a => a.toLocaleLowerCase(navigator.language)),
-    Status: convertNA(a => ({[spreadsheetData.Enum.STATUS.APPLICANT]: "Applicant", [spreadsheetData.Enum.STATUS.FINALIST]: "Finalist", [spreadsheetData.Enum.STATUS.RECIPIENT]: "Recipient", [spreadsheetData.Enum.STATUS.INELIGIBLE]: "Ineligible"})[a] || "N/A"),
+    Status: convertNA(a => ({[spreadsheetData.Enum.STATUS.APPLICANT]: "Applicant", [spreadsheetData.Enum.STATUS.FINALIST]: "Finalist", [spreadsheetData.Enum.STATUS.RECIPIENT]: "Recipient", [spreadsheetData.Enum.STATUS.INELIGIBLE]: "Ineligible", [spreadsheetData.Enum.STATUS.SECOND_READ]: "2nd Read"})[a] || "N/A"),
     Income:convertNA (a => Array.isArray(a) ? a[1] == "Infinity" ? `${prettyDollar(a[0])}+` : `${prettyDollar(a[0])}–${prettyDollar(a[1])}` : prettyDollar(a)),
     Members: convertNA(prettyNumber),
     EFC: convertNA(function(a) {
@@ -695,6 +695,7 @@
         if (filters.status !== null) {
           const rowStatus = ({
             [spreadsheetData.Enum.STATUS.APPLICANT]: "applicant",
+            [spreadsheetData.Enum.STATUS.SECOND_READ]: "2nd read",
             [spreadsheetData.Enum.STATUS.FINALIST]: "finalist",
             [spreadsheetData.Enum.STATUS.RECIPIENT]: "recipient",
             [spreadsheetData.Enum.STATUS.INELIGIBLE]: "ineligible"
@@ -1554,6 +1555,10 @@
               <span>Applicant</span>
             </div>
             <div>
+              <div className="applicant_status applicant_status_2nd_read">2</div>
+              <span>2nd Read</span>
+            </div>
+            <div>
               <div className="applicant_status applicant_status_finalist">F</div>
               <span>Finalist</span>
             </div>
@@ -1818,6 +1823,7 @@
       const fullID = `${this.props.year - 2000}-${row[data.c_ID]}`;
       const status = ({
         [spreadsheetData.Enum.STATUS.APPLICANT]: "applicant",
+        [spreadsheetData.Enum.STATUS.SECOND_READ]: "2nd read",
         [spreadsheetData.Enum.STATUS.FINALIST]: "finalist",
         [spreadsheetData.Enum.STATUS.RECIPIENT]: 'recipient',
         [spreadsheetData.Enum.STATUS.INELIGIBLE]: "ineligible"
@@ -1978,7 +1984,7 @@
 
       return (
         <button
-          className={`applicant_row applicant_status_${status}` + (
+          className={`applicant_row applicant_status_${status.replace(/\s+/g, "_")}` + (
             this.props.hidden ? " hidden" : ""
           ) + (
             !this.props.isFloating && row[data.c_ID] == this.props.floatingRow.ID ? " dragging" : ""
@@ -2864,6 +2870,7 @@
           // Generate the elements that will be red Xs that delete icons.
           for (let i = iconNames.length - 1; i >= 0; i--) {
             if (icons[i] !== null) {
+              icons[i] = <div className="modal_icon_container">{icons[i]}</div>;
               icons.splice(i + 1, 0, <button key={iconNames[i] + "-deleter"} className="modal_icon_deleter nostyle"><div></div></button>);
             }
           }
@@ -2977,6 +2984,7 @@
                   this.state.editing ?
                   <select defaultValue={status} onChange={this.onEditStatus.bind(this)}>
                     <option>Applicant</option>
+                    <option>2nd Read</option>
                     <option>Finalist</option>
                     <option>Recipient</option>
                     <option>Ineligible</option>
@@ -3549,6 +3557,7 @@
       this.onMakeEdit("Status", ({
         "Ineligible": spreadsheetData.Enum.STATUS.INELIGIBLE,
         "Applicant": spreadsheetData.Enum.STATUS.APPLICANT,
+        "2nd Read": spreadsheetData.Enum.STATUS.SECOND_READ,
         "Finalist": spreadsheetData.Enum.STATUS.FINALIST,
         "Recipient": spreadsheetData.Enum.STATUS.RECIPIENT
       })[e.currentTarget.value] || NA);
