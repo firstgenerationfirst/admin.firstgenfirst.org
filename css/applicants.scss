@@ -2,8 +2,9 @@
 ---
 {%- include variables.scss -%}
 
-$finalist-color: change-color($theme-color, $hue: 30deg, $lightness: 90%);
-$recipient-color: change-color($theme-color, $lightness: 90%);
+$second-read-color: change-color($theme-color, $hue: 30deg, $lightness: 90%);
+$finalist-color: change-color($theme-color, $lightness: 90%);
+$recipient-color: change-color($theme-color, $hue: 122deg, $lightness: 90%);
 
 body {
     display: flex;
@@ -508,6 +509,19 @@ svg {
             }
         }
 
+        &.applicant_status_2nd_read {
+            background-color: $second-read-color;
+
+            &:hover,
+            &:focus,
+            &:focus-within,
+            &.dragging,
+            &.floating,
+            .applicant_match .partial_match {
+                background-color: scale-color($second-read-color, $lightness: -10%);
+            }
+        }
+
         &.applicant_status_finalist {
             background-color: $finalist-color;
 
@@ -985,9 +999,8 @@ svg {
             height: 1.4em;
             display: inline-block;
             fill: currentColor;
-            border-radius: .25em;
+            border-radius: inherit;
             padding: .2em;
-            margin: 0 .375rem;
         }
 
         .modal_icon_deleter {
@@ -1039,11 +1052,13 @@ svg {
             }
         }
 
-        &.editing svg {
+        &.editing .modal_icon_container {
+            display: inline-block;
             animation: wobble infinite alternate;
             box-shadow: $shadow;
             margin: 0 calc(.375rem - 1px);
             cursor: pointer;
+            border-radius: .25em;
         }
 
         &.editing .modal_icon_deleter {
@@ -1057,7 +1072,7 @@ svg {
             $origin-y: #{random() * 1.8rem};
             $delay: #{random() * -1s};
 
-            &.editing svg:nth-child(15n+#{$i}):not(.add_icon) {
+            &.editing .modal_icon_container:nth-child(15n+#{$i}) {
                 animation-duration: $duration;
                 transform-origin: $origin-x $origin-y;
                 animation-delay: $delay;

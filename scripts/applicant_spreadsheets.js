@@ -36,6 +36,7 @@
 		WRITE_IN: makeWriteIn(null),
 		STATUS: {
 			APPLICANT: enumValue("STATUS.APPLICANT"),
+			SECOND_READ: enumValue("STATUS.SECOND_READ"),
 			FINALIST: enumValue("STATUS.FINALIST"),
 			RECIPIENT: enumValue("STATUS.RECIPIENT"),
 			INELIGIBLE: enumValue("STATUS.INELIGIBLE"),
@@ -168,7 +169,7 @@
 				// Translate values FROM the spreadsheet to their corresponding JavaScript value
 				from: {
 					ID: a => (+a).toString(16).toUpperCase(),
-					Status: a => ({"Applicant": Enum.STATUS.APPLICANT, "Finalist": Enum.STATUS.FINALIST, "Recipient": Enum.STATUS.RECIPIENT, "Ineligible": Enum.STATUS.INELIGIBLE})[a] || Enum.STATUS.APPLICANT,
+					Status: a => ({"Applicant": Enum.STATUS.APPLICANT, "Finalist": Enum.STATUS.FINALIST, "Recipient": Enum.STATUS.RECIPIENT, "Ineligible": Enum.STATUS.INELIGIBLE, "2nd Read": Enum.STATUS.SECOND_READ})[a] || Enum.STATUS.APPLICANT,
 					Loans: a => ({"No": Enum.LOANS.NO, "Yes": Enum.LOANS.YES})[a] || Enum.NA,
 					Year: a => ({"FY": Enum.YEAR.FIRST_YEAR, "GRAD": Enum.YEAR.GRADUATE, "RSJSC": Enum.YEAR.COLLEGE, "RSJSHS": Enum.YEAR.HIGH_SCHOOL, "TRANSF": Enum.YEAR.TRANSFER})[a] || Enum.NA,
 					Campus_Living: a => ({"OFFNP": Enum.CAMPUS_LIVING.OFF_CAMPUS_NO_RENT, "OFFP": Enum.CAMPUS_LIVING.OFF_CAMPUS_RENT, "ONC": Enum.CAMPUS_LIVING.ON_CAMPUS, "UNS": Enum.CAMPUS_LIVING.UNCERTAIN})[a] || Enum.NA,
@@ -203,7 +204,7 @@
 				// Translate values TO a spreadsheet value to be stored long term on Google Sheets
 				to: {
 					ID: a => parseInt(a, 16),
-					Status: a => ({[Enum.STATUS.APPLICANT]: "Applicant", [Enum.STATUS.FINALIST]: "Finalist", [Enum.STATUS.RECIPIENT]: "Recipient", [Enum.STATUS.INELIGIBLE]: "Ineligible"})[a] || "Applicant",
+					Status: a => ({[Enum.STATUS.APPLICANT]: "Applicant", [Enum.STATUS.FINALIST]: "Finalist", [Enum.STATUS.RECIPIENT]: "Recipient", [Enum.STATUS.INELIGIBLE]: "Ineligible", [Enum.STATUS.SECOND_READ]: "2nd Read"})[a] || "Applicant",
 					Loans: a => ({[Enum.LOANS.NO]: "No", [Enum.LOANS.YES]: "Yes", [Enum.NA]: "N/A"})[a] || "N/A",
 					Year: a => ({[Enum.YEAR.FIRST_YEAR]: "FY", [Enum.YEAR.GRADUATE]: "GRAD", [Enum.YEAR.COLLEGE]: "RSJSC", [Enum.YEAR.HIGH_SCHOOL]: "RSJSHS", [Enum.YEAR.TRANSFER]: "TRANSF"})[a] || "N/A",
 					Campus_Living: a => ({[Enum.CAMPUS_LIVING.OFF_CAMPUS_NO_RENT]: "OFFNP", [Enum.CAMPUS_LIVING.OFF_CAMPUS_RENT]: "OFFP", [Enum.CAMPUS_LIVING.ON_CAMPUS]: "ONC", [Enum.CAMPUS_LIVING.UNCERTAIN]: "UNS"})[a] || "N/A",
@@ -270,7 +271,7 @@
 			],
 			translate: {
 				from: {
-					Status: a => ({"Applicant": Enum.STATUS.APPLICANT, "Finalist": Enum.STATUS.FINALIST, "Recipient": Enum.STATUS.RECIPIENT, "Ineligible": Enum.STATUS.INELIGIBLE})[a] || Enum.STATUS.APPLICANT,
+					Status: a => ({"Applicant": Enum.STATUS.APPLICANT, "Finalist": Enum.STATUS.FINALIST, "Recipient": Enum.STATUS.RECIPIENT, "Ineligible": Enum.STATUS.INELIGIBLE, "2nd Read": Enum.STATUS.SECOND_READ})[a] || Enum.STATUS.APPLICANT,
 					Income: function(a) {
 						a = a.replace(/,/g, "");
 						let match;
@@ -308,7 +309,7 @@
 					Icons: a => a.split("|").map(b => b.trim()).filter(b => b)
 				},
 				to: {
-					Status: a => ({[Enum.STATUS.APPLICANT]: "Applicant", [Enum.STATUS.FINALIST]: "Finalist", [Enum.STATUS.RECIPIENT]: "Recipient", [Enum.STATUS.INELIGIBLE]: "Ineligible"})[a] || "Applicant",
+					Status: a => ({ [Enum.STATUS.APPLICANT]: "Applicant", [Enum.STATUS.FINALIST]: "Finalist", [Enum.STATUS.RECIPIENT]: "Recipient", [Enum.STATUS.INELIGIBLE]: "Ineligible", [Enum.STATUS.SECOND_READ]: "2nd Read"})[a] || "Applicant",
 					Income: a => a ? Array.isArray(a) ? a[1] == Infinity ? `More than $${a[0]}` : `$${a[0]} - $${a[1]}` : `$${a}` : "N/A",
 					College: a => a == Enum.NA ? "N/A" : a,
 					Loans: a => ({[Enum.LOANS.NO]: "No", [Enum.LOANS.YES]: "Yes", [Enum.NA]: "N/A"})[a] || "N/A",
